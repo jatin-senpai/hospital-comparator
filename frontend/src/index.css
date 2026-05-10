@@ -3,29 +3,29 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* Core Deep Space Theme */
-  --ink: #07090F;
-  --ink-2: #101423;
-  --ink-3: #1B2138;
+  /* Clean Medical Light Theme */
+  --ink: #ffffff;
+  --ink-2: #f8fafc;
+  --ink-3: #f1f5f9;
   
   /* Vibrant Accents */
-  --accent: #00F0FF;
-  --accent-dark: #00B8C4;
-  --accent-glow: rgba(0, 240, 255, 0.2);
-  --teal: #10B981;
-  --teal-glow: rgba(16, 185, 129, 0.2);
-  --purple: #8B5CF6;
-  --purple-glow: rgba(139, 92, 246, 0.2);
+  --accent: #0ea5e9;
+  --accent-dark: #0284c7;
+  --accent-glow: rgba(14, 165, 233, 0.15);
+  --teal: #10b981;
+  --teal-glow: rgba(16, 185, 129, 0.15);
+  --purple: #8b5cf6;
+  --purple-glow: rgba(139, 92, 246, 0.15);
   
   /* Text */
-  --chalk: #F8FAFC;
-  --chalk-2: #CBD5E1;
-  --chalk-3: #94A3B8;
+  --chalk: #0f172a;
+  --chalk-2: #334155;
+  --chalk-3: #64748b;
   
   /* UI Elements */
-  --glass-bg: rgba(16, 20, 35, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-highlight: rgba(255, 255, 255, 0.12);
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(15, 23, 42, 0.08);
+  --glass-highlight: rgba(255, 255, 255, 1);
   
   --border: 1px solid var(--glass-border);
   --radius: 8px;
@@ -49,13 +49,13 @@ body {
   background: var(--ink);
   color: var(--chalk);
   min-height: 100vh;
-  cursor: none;
+  cursor: default;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   position: relative;
 }
 
-/* Dynamic Mesh Gradient Background */
+/* Dynamic Soft Background Blobs */
 body::before {
   content: '';
   position: fixed;
@@ -64,63 +64,33 @@ body::before {
   width: 200%;
   height: 200%;
   background: 
-    radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 80% 20%, rgba(0, 240, 255, 0.06) 0%, transparent 30%),
-    radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.06) 0%, transparent 30%);
+    radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.04) 0%, transparent 40%),
+    radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.04) 0%, transparent 40%);
   z-index: -1;
   pointer-events: none;
-  animation: mesh-flow 20s infinite alternate ease-in-out;
+  animation: mesh-flow 25s infinite alternate ease-in-out;
+  filter: blur(50px);
 }
 
-/* Glassmorphism Utilities */
+/* Utilities */
 .glass-panel {
   background: var(--glass-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: var(--border);
   border-radius: var(--radius-lg);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
 }
-
-/* Custom cursor */
-.cursor-dot {
-  position: fixed;
-  width: 6px;
-  height: 6px;
-  background: var(--chalk);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99999;
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
-  box-shadow: 0 0 10px var(--chalk);
-}
-
-.cursor-ring {
-  position: fixed;
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--accent-glow);
-  background: rgba(0, 240, 255, 0.05);
-  backdrop-filter: blur(2px);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99998;
-  transform: translate(-50%, -50%);
-  transition: transform 0.15s ease-out, width 0.3s var(--spring), height 0.3s var(--spring), border-color 0.2s;
-}
-
-.cursor-dot.hovered { width: 0px; height: 0px; background: transparent; }
-.cursor-ring.hovered { width: 60px; height: 60px; border-color: var(--accent); background: var(--accent-glow); backdrop-filter: blur(0px); }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--ink); }
 ::-webkit-scrollbar-thumb { background: var(--ink-3); border-radius: 10px; border: 1px solid var(--ink); }
-::-webkit-scrollbar-thumb:hover { background: var(--accent-dark); }
+::-webkit-scrollbar-thumb:hover { background: var(--chalk-3); }
 
 /* Selection */
-::selection { background: var(--accent-glow); color: var(--accent); }
+::selection { background: var(--accent-glow); color: var(--accent-dark); }
 
 /* Utilities */
 .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
@@ -156,7 +126,7 @@ input, select, textarea, button { font-family: var(--font-body); outline: none; 
 
 /* Button Base styling (since we reuse this everywhere) */
 button {
-  cursor: none;
+  cursor: pointer;
   transition: var(--transition);
 }
 
@@ -165,4 +135,9 @@ button {
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: var(--radius);
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }

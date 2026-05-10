@@ -1,9 +1,9 @@
 import styles from './HospitalCard.module.css'
 
 const BADGE_COLORS = {
-  teal: { bg: 'rgba(45,212,160,0.12)', color: '#2DD4A0', border: 'rgba(45,212,160,0.25)' },
-  amber: { bg: 'rgba(245,166,35,0.12)', color: '#F5A623', border: 'rgba(245,166,35,0.25)' },
-  chalk: { bg: 'rgba(245,242,237,0.08)', color: '#D9D4CB', border: 'rgba(245,242,237,0.15)' },
+  teal: { bg: 'rgba(16,185,129,0.1)', color: '#047857', border: 'rgba(16,185,129,0.2)' },
+  amber: { bg: 'rgba(245,158,11,0.1)', color: '#b45309', border: 'rgba(245,158,11,0.2)' },
+  chalk: { bg: 'rgba(100,116,139,0.1)', color: '#334155', border: 'rgba(100,116,139,0.2)' },
 }
 
 export default function HospitalCard({ hospital, serviceId, cheapest, isSelected, onClick, onHover, onBook }) {
@@ -20,7 +20,7 @@ export default function HospitalCard({ hospital, serviceId, cheapest, isSelected
           <span
             key={i}
             className={styles.star}
-            style={{ color: i < full || (i === full && half) ? '#F5A623' : 'rgba(245,242,237,0.2)' }}
+            style={{ color: i < full || (i === full && half) ? '#F5A623' : '#e2e8f0' }}
           >
             ★
           </span>

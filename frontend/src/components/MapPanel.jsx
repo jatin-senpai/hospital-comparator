@@ -30,8 +30,8 @@ export default function MapPanel({ hospitals, serviceId, selected, hoveredId, ci
         zoomControl: false,
       })
 
-      // Dark tile layer
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      // Light tile layer
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '© OpenStreetMap © CARTO',
         maxZoom: 19,
       }).addTo(map)
@@ -73,16 +73,16 @@ export default function MapPanel({ hospitals, serviceId, selected, hoveredId, ci
         className: '',
         html: `
           <div style="
-            background: ${isSelected ? '#C8F04D' : isHovered ? '#2DD4A0' : '#1A1A1A'};
-            color: ${isSelected ? '#0D0D0D' : '#F5F2ED'};
-            border: 1.5px solid ${isSelected ? '#C8F04D' : isHovered ? '#2DD4A0' : 'rgba(245,242,237,0.2)'};
+            background: ${isSelected ? '#10b981' : isHovered ? '#38bdf8' : '#0ea5e9'};
+            color: #ffffff;
+            border: 1.5px solid ${isSelected ? '#047857' : isHovered ? '#0284c7' : '#0284c7'};
             border-radius: 8px;
             padding: 5px 10px;
-            font-family: 'Syne', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: 12px;
             font-weight: 600;
             white-space: nowrap;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
@@ -93,8 +93,8 @@ export default function MapPanel({ hospitals, serviceId, selected, hoveredId, ci
           </div>
           <div style="
             width: 8px; height: 8px;
-            background: ${isSelected ? '#C8F04D' : isHovered ? '#2DD4A0' : '#1A1A1A'};
-            border: 1.5px solid ${isSelected ? '#C8F04D' : 'rgba(245,242,237,0.2)'};
+            background: ${isSelected ? '#10b981' : isHovered ? '#38bdf8' : '#0ea5e9'};
+            border: 1.5px solid ${isSelected ? '#047857' : '#0284c7'};
             border-radius: 50%;
             margin: 3px auto 0;
           "></div>
@@ -117,14 +117,14 @@ export default function MapPanel({ hospitals, serviceId, selected, hoveredId, ci
         <div style="position:relative; width:20px; height:20px;">
           <div style="
             width:20px; height:20px; border-radius:50%;
-            background: rgba(200,240,77,0.2);
-            border: 2px solid #C8F04D;
+            background: rgba(14, 165, 233, 0.2);
+            border: 2px solid #0ea5e9;
             animation: pulse-accent 2s infinite;
           "></div>
           <div style="
             position:absolute; inset:4px;
             border-radius:50%;
-            background:#C8F04D;
+            background:#0ea5e9;
           "></div>
         </div>
       `,

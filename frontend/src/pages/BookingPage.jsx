@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { api } from '../services/api'
 import { SERVICES } from '../services/mockData'
@@ -16,10 +16,16 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
   const [upiId, setUpiId] = useState('')
   const [processing, setProcessing] = useState(false)
   const [bookingRef, setBookingRef] = useState('')
+  const [slots, setSlots] = useState([])
 
   const service = SERVICES.find(s => s.id === serviceId)
-  const svc = hospital.services[serviceId]
-  const slots = hospital.slots
+  const svc = hospital.services ? hospital.services[serviceId] : null
+
+  useEffect(() => {
+    api.getSlots(hospital.id).then(data => {
+      if (data && Array.isArray(data.slots)) setSlots(data.slots)
+    }).catch(err => console.error("Failed to fetch slots", err))
+  }, [hospital.id])
 
   const handlePay = async () => {
     setProcessing(true)
@@ -175,7 +181,7 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
 
             {/* Time slots */}
             <div className={styles.slotGrid}>
-              {slots[selectedDay]?.slots.map(slot => (
+              {slots[selectedDay]?.slots?.map(slot => (
                 <button
                   key={slot.id}
                   className={`

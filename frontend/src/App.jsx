@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import Cursor from './components/Cursor'
 import SearchPage from './pages/SearchPage'
 import ResultsPage from './pages/ResultsPage'
 import BookingPage from './pages/BookingPage'
@@ -23,7 +22,6 @@ export default function App() {
 
   return (
     <>
-      <Cursor />
       {page === 'search' && (
         <SearchPage 
           onSearch={handleSearch} 

@@ -43,6 +43,7 @@ export const api = {
   }),
   searchHospitals: (service, lat, lng) => fetchWithAuth(`/api/v1/hospitals/search?service=${service}&lat=${lat}&lng=${lng}`),
   getHospital: (id) => fetchWithAuth(`/api/v1/hospitals/${id}`),
+  getSlots: (id) => fetchWithAuth(`/api/v1/hospitals/${id}/slots`),
   getBookingHistory: () => fetchWithAuth('/api/v1/bookings/history'),
   createBooking: (bookingData) => fetchWithAuth('/api/v1/bookings', {
     method: 'POST',

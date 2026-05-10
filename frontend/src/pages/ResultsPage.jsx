@@ -26,14 +26,17 @@ export default function ResultsPage({ query, serviceId, city, onBook, onBack }) 
         // We need to map it to match the component props format
         const formatted = data.results.map(r => ({
           ...r.hospital,
-          distance: r.distance,
+          distance: r.distance_km,
+          reviews: r.hospital.review_count || 0,
+          hours: r.hospital.open_hours || 'N/A',
+          openNow: true,
           // Convert the array of services or single price to what HospitalCard expects
           services: {
             [activeService]: {
-              price: r.price ? r.price.price : 0,
-              duration: r.price ? r.price.duration_min : 15,
-              available: r.price ? r.price.available : false,
-              report: r.price ? r.price.report_time : '2 hrs'
+              price: r.service_price ? r.service_price.price : 0,
+              duration: r.service_price ? r.service_price.duration_minutes : 15,
+              available: r.service_price ? r.service_price.available : false,
+              report: r.service_price ? r.service_price.report_time : '2 hrs'
             }
           }
         }))
