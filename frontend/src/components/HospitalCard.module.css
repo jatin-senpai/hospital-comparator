@@ -1,0 +1,205 @@
+.card {
+  background: var(--ink-2);
+  border: 1px solid rgba(245,242,237,0.07);
+  border-radius: 16px;
+  padding: 1.1rem 1.25rem;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: transparent;
+  transition: background 0.2s;
+  border-radius: 16px 0 0 16px;
+}
+
+.card:hover {
+  border-color: rgba(245,242,237,0.15);
+  background: rgba(42,42,42,0.9);
+  transform: translateX(2px);
+}
+
+.card:hover::before { background: var(--accent); }
+.card.selected { border-color: var(--accent); }
+.card.selected::before { background: var(--accent); }
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  background: var(--ink-3);
+  border: 1px solid rgba(245,242,237,0.1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatarText {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--chalk);
+  font-style: italic;
+}
+
+.info { flex: 1; min-width: 0; }
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--chalk);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.badge {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  padding: 3px 8px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+.meta { margin-bottom: 5px; }
+
+.stars { display: flex; align-items: center; gap: 2px; }
+.star { font-size: 11px; }
+.ratingNum { font-size: 12px; color: var(--chalk); margin-left: 5px; font-weight: 600; }
+.reviewCount { font-size: 11px; color: var(--muted); margin-left: 2px; font-family: var(--font-mono); }
+
+.address {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+}
+
+/* Price box */
+.priceBox {
+  text-align: right;
+  min-width: 80px;
+}
+
+.cheapTag {
+  font-size: 9px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  background: rgba(200,240,77,0.12);
+  border: 1px solid rgba(200,240,77,0.25);
+  padding: 2px 7px;
+  border-radius: 100px;
+  margin-bottom: 4px;
+  display: inline-block;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--chalk);
+  font-family: var(--font-display);
+  line-height: 1;
+}
+
+.priceSub {
+  font-size: 10px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  margin-top: 4px;
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: rgba(245,242,237,0.05);
+  margin-bottom: 10px;
+}
+
+/* Bottom row */
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.chips {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--muted);
+  padding: 4px 9px;
+  border: 1px solid rgba(245,242,237,0.07);
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+.chipGreen { color: var(--teal) !important; border-color: rgba(45,212,160,0.2) !important; }
+.chipRed { color: var(--red) !important; border-color: rgba(255,92,92,0.2) !important; }
+
+.chipDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.bookBtn {
+  padding: 8px 16px;
+  background: var(--accent);
+  color: var(--ink);
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: var(--font-body);
+  transition: all 0.15s;
+}
+
+.bookBtn:hover:not(:disabled) {
+  background: var(--accent-dark);
+  transform: translateY(-1px);
+}
+
+.bookBtn:disabled {
+  background: var(--ink-3);
+  color: var(--muted);
+  cursor: not-allowed;
+}

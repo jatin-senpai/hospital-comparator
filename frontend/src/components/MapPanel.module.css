@@ -1,0 +1,100 @@
+.wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+  background: var(--ink-2);
+}
+
+/* Selected overlay */
+.overlay {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink-2);
+  border: 1px solid rgba(200,240,77,0.25);
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  min-width: 260px;
+  z-index: 1000;
+  animation: scaleIn 0.25s ease forwards;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+.overlayName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--chalk);
+  margin-bottom: 3px;
+}
+
+.overlaySub {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  margin-bottom: 8px;
+}
+
+.overlayPrice {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 22px;
+  color: var(--accent);
+  margin-bottom: 10px;
+  line-height: 1;
+}
+
+.overlayBtn {
+  width: 100%;
+  padding: 9px;
+  background: var(--accent);
+  color: var(--ink);
+  border: none;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: all 0.15s;
+}
+
+.overlayBtn:hover {
+  background: var(--accent-dark);
+}
+
+/* Legend */
+.legend {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(13,13,13,0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(245,242,237,0.08);
+  border-radius: 10px;
+  padding: 10px 14px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+}
+
+.legendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
