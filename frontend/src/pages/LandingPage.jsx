@@ -82,6 +82,21 @@ export default function LandingPage({ onSuccess }) {
             </p>
           </div>
 
+          <div className={styles.tabContainer}>
+            <button 
+              className={`${styles.tab} ${isLogin ? styles.activeTab : ''}`}
+              onClick={() => { setIsLogin(true); setError(''); }}
+            >
+              Sign In
+            </button>
+            <button 
+              className={`${styles.tab} ${!isLogin ? styles.activeTab : ''}`}
+              onClick={() => { setIsLogin(false); setError(''); }}
+            >
+              Sign Up
+            </button>
+          </div>
+
           {error && <div className={styles.error}>{error}</div>}
 
           <form onSubmit={handleSubmit}>
@@ -130,19 +145,6 @@ export default function LandingPage({ onSuccess }) {
                 : (isLogin ? 'Sign In' : 'Create Account')}
             </button>
           </form>
-
-          <p className={styles.toggleText}>
-            {isLogin ? "Don't have an account? " : "Already have an account? "}
-            <button 
-              className={styles.toggleBtn}
-              onClick={() => {
-                setIsLogin(!isLogin);
-                setError('');
-              }}
-            >
-              {isLogin ? 'Sign up' : 'Sign in'}
-            </button>
-          </p>
         </div>
       </div>
     </div>
