@@ -25,21 +25,6 @@ var CityLocations = map[string]CityCoordinates{
 		Latitude:  19.0760,
 		Longitude: 72.8777,
 	},
-	"bangalore": {
-		Name:      "Bangalore",
-		Latitude:  12.9716,
-		Longitude: 77.5946,
-	},
-	"hyderabad": {
-		Name:      "Hyderabad",
-		Latitude:  17.3850,
-		Longitude: 78.4867,
-	},
-	"pune": {
-		Name:      "Pune",
-		Latitude:  18.5204,
-		Longitude: 73.8567,
-	},
 }
 
 type User struct {
@@ -158,11 +143,8 @@ type AuthResponse struct {
 	User  User   `json:"user"`
 }
 
-type SendOTPRequest struct {
-	Phone string `json:"phone" binding:"required"`
-}
-
-type VerifyOTPRequest struct {
-	Phone string `json:"phone" binding:"required"`
-	OTP   string `json:"otp" binding:"required"`
+type SignupRequest struct {
+	Name     string `json:"name" binding:"required"`
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required,min=6"`
 }

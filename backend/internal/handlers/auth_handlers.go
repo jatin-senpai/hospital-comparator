@@ -43,56 +43,30 @@ func Login(c *gin.Context) {
 	})
 }
 
-var otpStore = make(map[string]string)
-
-func SendOTP(c *gin.Context) {
-	var req models.SendOTPRequest
+func Signup(c *gin.Context) {
+	var req models.SignupRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	// Generate a random 6-digit OTP (using a mock static one or random)
-	// For simplicity in testing, we can use 123456 or a random one. Let's do random.
-	otp := "123456" // Hardcoded for demo/resume purposes so they don't get stuck if they miss the log
-	otpStore[req.Phone] = otp
-
-	// Print to console to simulate sending SMS
-	println("\n==================================================")
-	println("📲 MOCK SMS GATEWAY")
-	println("To:", req.Phone)
-	println("Message: Your MediQ verification code is", otp)
-	println("==================================================\n")
-
-	c.JSON(http.StatusOK, gin.H{"message": "OTP sent successfully"})
-}
-
-func VerifyOTP(c *gin.Context) {
-	var req models.VerifyOTPRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	// Check if user already exists
+	var existingUser models.User
+	if err := database.DB.Where("email = ?", req.Email).First(&existingUser).Error; err == nil {
+		c.JSON(http.StatusConflict, gin.H{"error": "User with this email already exists"})
 		return
 	}
 
-	storedOTP, exists := otpStore[req.Phone]
-	if !exists || storedOTP != req.OTP {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid or expired OTP"})
-		return
+	// Create new user
+	user := models.User{
+		Email:    req.Email,
+		Password: req.Password,
+		Name:     req.Name,
 	}
-
-	// Clear OTP after successful use
-	delete(otpStore, req.Phone)
-
-	// Find or create user based on phone (using phone as email for simplicity in mock)
-	var user models.User
-	if err := database.DB.Where("email = ?", req.Phone).First(&user).Error; err != nil {
-		// Create new user
-		user = models.User{
-			Email:    req.Phone,
-			Password: "otp_login",
-			Name:     "User " + req.Phone,
-		}
-		database.DB.Create(&user)
+	
+	if err := database.DB.Create(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
+		return
 	}
 
 	// Generate token
@@ -108,7 +82,7 @@ func VerifyOTP(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, models.AuthResponse{
+	c.JSON(http.StatusCreated, models.AuthResponse{
 		Token: tokenString,
 		User:  user,
 	})

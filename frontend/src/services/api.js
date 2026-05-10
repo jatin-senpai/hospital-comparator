@@ -33,13 +33,9 @@ export const api = {
     method: 'POST',
     body: JSON.stringify(credentials),
   }),
-  sendOTP: (phone) => fetchWithAuth('/api/v1/auth/send-otp', {
+  signup: (userData) => fetchWithAuth('/api/v1/auth/signup', {
     method: 'POST',
-    body: JSON.stringify({ phone }),
-  }),
-  verifyOTP: (phone, otp) => fetchWithAuth('/api/v1/auth/verify-otp', {
-    method: 'POST',
-    body: JSON.stringify({ phone, otp }),
+    body: JSON.stringify(userData),
   }),
   searchHospitals: (service, lat, lng) => fetchWithAuth(`/api/v1/hospitals/search?service=${service}&lat=${lat}&lng=${lng}`),
   getHospital: (id) => fetchWithAuth(`/api/v1/hospitals/${id}`),

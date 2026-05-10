@@ -2,9 +2,6 @@ export const CITIES = [
   { id: 'jaipur', name: 'Jaipur', latitude: 26.9124, longitude: 75.7873 },
   { id: 'delhi', name: 'Delhi', latitude: 28.7041, longitude: 77.1025 },
   { id: 'mumbai', name: 'Mumbai', latitude: 19.0760, longitude: 72.8777 },
-  { id: 'bangalore', name: 'Bangalore', latitude: 12.9716, longitude: 77.5946 },
-  { id: 'hyderabad', name: 'Hyderabad', latitude: 17.3850, longitude: 78.4867 },
-  { id: 'pune', name: 'Pune', latitude: 18.5204, longitude: 73.8567 },
 ]
 
 export const SERVICES = [

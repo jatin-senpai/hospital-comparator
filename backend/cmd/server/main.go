@@ -52,8 +52,7 @@ func main() {
 		auth := v1.Group("/auth")
 		{
 			auth.POST("/login", handlers.Login)
-			auth.POST("/send-otp", handlers.SendOTP)
-			auth.POST("/verify-otp", handlers.VerifyOTP)
+			auth.POST("/signup", handlers.Signup)
 		}
 
 		// Booking routes

@@ -2,13 +2,24 @@ import { useState } from 'react'
 import SearchPage from './pages/SearchPage'
 import ResultsPage from './pages/ResultsPage'
 import BookingPage from './pages/BookingPage'
-import LoginPage from './pages/LoginPage'
+import LandingPage from './pages/LandingPage'
 import HistoryPage from './pages/HistoryPage'
+import { useContext, useEffect } from 'react'
+import { AuthContext } from './context/AuthContext'
 
 export default function App() {
-  const [page, setPage] = useState('search')
+  const { user } = useContext(AuthContext)
+  const [page, setPage] = useState(user ? 'search' : 'landing')
   const [searchState, setSearchState] = useState({ query: '', serviceId: '', city: null })
   const [bookingState, setBookingState] = useState({ hospital: null, serviceId: '' })
+
+  useEffect(() => {
+    if (user && page === 'landing') {
+      setPage('search')
+    } else if (!user && page !== 'landing') {
+      setPage('landing')
+    }
+  }, [user])
 
   const handleSearch = (query, serviceId, city) => {
     setSearchState({ query, serviceId, city })
@@ -25,7 +36,7 @@ export default function App() {
       {page === 'search' && (
         <SearchPage 
           onSearch={handleSearch} 
-          onLogin={() => setPage('login')}
+          onLogin={() => setPage('landing')}
           onHistory={() => setPage('history')}
         />
       )}
@@ -44,12 +55,11 @@ export default function App() {
           serviceId={bookingState.serviceId}
           onBack={() => setPage('results')}
           onConfirm={() => setPage('history')}
-          onLoginReq={() => setPage('login')}
+          onLoginReq={() => setPage('landing')}
         />
       )}
-      {page === 'login' && (
-        <LoginPage
-          onBack={() => setPage('search')}
+      {page === 'landing' && (
+        <LandingPage
           onSuccess={() => setPage('search')}
         />
       )}
