@@ -15,8 +15,9 @@ var DB *gorm.DB
 func Connect() {
 	dsn := os.Getenv("DATABASE_URL")
 	if dsn == "" {
-		// Default to Neon postgres
-		dsn = "postgresql://neondb_owner:npg_y4xEAI6Hsmtc@ep-billowing-tree-amf2kex7-pooler.c-5.us-east-1.aws.neon.tech/neondb?sslmode=require"
+		// Fallback to local postgres for development
+		dsn = "host=localhost user=postgres password=postgres dbname=mediq port=5432 sslmode=disable"
+		log.Println("WARNING: DATABASE_URL not set. Falling back to local postgres configuration.")
 	}
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
