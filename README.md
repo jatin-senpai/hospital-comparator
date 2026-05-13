@@ -9,47 +9,48 @@
 
 ## 🚀 Overview
 
-**MediQ** is a production-ready, full-stack web application that allows users to seamlessly search for diagnostic medical tests (e.g., X-Rays, MRI Scans, Blood Tests), compare real-time prices and availability across nearby hospitals, and book appointments through a secure, integrated payment gateway.
+**MediQ** is a production-ready, full-stack web application designed to optimize the patient experience when booking diagnostic medical tests (e.g., X-Rays, MRI Scans, Blood Tests). The platform empowers users to seamlessly search for tests, compare real-time prices and availability across nearby hospitals, and complete bookings through a highly secure, integrated payment gateway. 
+
+Built with scalability and modern user experience in mind, MediQ leverages a robust Go backend, a dynamic React frontend, and a containerized deployment architecture.
 
 ---
 
 ## 🛠️ Technology Stack
 
-### Frontend
-- **Framework:** React 18 + Vite
-- **Styling:** Custom CSS Modules ("Medical Light" Design System)
-- **Maps:** Leaflet.js (OpenStreetMap API)
-- **Payments Integration:** Razorpay SDK
+### Frontend Architecture
+- **Core:** React 18 + Vite (optimized for fast HMR and optimized production builds)
+- **Design System:** Custom CSS Modules implementing a bespoke "Medical Light" UI with glassmorphism, micro-animations, and centralized hero layouts.
+- **Geospatial Visualization:** Leaflet.js integrating OpenStreetMap API for interactive map rendering.
+- **Payment Integration:** Razorpay Frontend SDK for seamless checkout modals.
 
-### Backend
-- **Language:** Go (Golang) 1.21+
-- **Framework:** Gin Web Framework
-- **Database:** PostgreSQL (NeonDB)
-- **ORM:** GORM
-- **Authentication:** JWT (JSON Web Tokens) + Secure OTP Flow
-- **Payment Verification:** HMAC-SHA256 Signature Validation
+### Backend Architecture
+- **Language:** Go (Golang) 1.21+ 
+- **Web Framework:** Gin Web Framework (high-performance HTTP routing)
+- **Database:** PostgreSQL (hosted via NeonDB)
+- **ORM:** GORM for schema migrations and complex relational querying.
+- **Authentication:** Secure Phone-Number & OTP-based flow coupled with JWT (JSON Web Tokens) for stateless session management.
+- **Security:** HMAC-SHA256 Signature Validation for Razorpay webhook verification.
 
 ### DevOps & Infrastructure
-- **Containerization:** Docker & Docker Compose
-- **Backend/DB Hosting:** Render (Automated via `render.yaml` Blueprints)
-- **Frontend Hosting:** Vercel
+- **Containerization:** Docker & Docker Compose (Multi-stage builds for optimized image sizes).
+- **Web Server / Reverse Proxy:** Nginx (Alpine-based) for serving static frontend assets.
+- **Infrastructure-as-Code:** Custom `render.yaml` Blueprints for automated, one-click cloud provisioning.
+- **Hosting:** Render (Backend API & PostgreSQL) and Vercel (Frontend edge delivery).
 
 ---
 
-## ✨ Key Features
+## ✨ Core Technical Achievements
 
-- **Smart Search Engine:** Built-in query normalization (e.g., handling spaces and hyphens so "x ray" flawlessly matches "X-Ray") and geospatial sorting (Haversine formula).
-- **Interactive Live Map:** Integrated Leaflet map rendering dynamic hospital locations with real-time price markers.
-- **OTP Authentication:** Secure phone-number-based login system utilizing One-Time Passwords (OTP) and JWT session management.
-- **Dynamic Appointment Slots:** Real-time generation and fetching of hospital appointment slots directly from the PostgreSQL database.
-- **Secure Payment Gateway:** Complete end-to-end Razorpay integration including backend order creation, frontend checkout modal, and secure backend webhook/signature verification.
-- **Medical Report Generation:** Dynamic, downloadable PDF medical reports tied to confirmed booking reference numbers.
-- **Modern UI/UX:** A bespoke "Medical Light" aesthetic featuring glassmorphism, centralized hero layouts, and smooth micro-animations.
-- **One-Click Deployment:** fully containerized architecture with a custom `render.yaml` blueprint for instant cloud provisioning.
+- **Geospatial Search Engine:** Implemented a robust backend search algorithm using query normalization (seamlessly matching "x ray" to "X-Ray") and the **Haversine formula** to calculate and sort hospitals by proximity in real-time.
+- **Multi-Factor Authentication (OTP):** Engineered a highly secure, password-less login system utilizing One-Time Passwords (OTP) delivered via SMS, managed via secure JWT sessions.
+- **End-to-End Payment Pipeline:** Architected a secure payment flow with Razorpay. Handled backend order creation, frontend state management during checkout, and cryptographic signature verification (HMAC-SHA256) to prevent transaction tampering.
+- **Dynamic Medical Report Generation:** Built a customized engine to generate on-the-fly, downloadable PDF medical reports explicitly tied to confirmed booking reference numbers.
+- **Optimized Containerization:** Utilized Docker multi-stage builds. Reduced the Go backend image footprint using an `alpine` base and optimized the React SPA delivery using an Nginx reverse proxy.
+- **Real-Time Interactive Mapping:** Integrated Leaflet.js to render dynamic hospital locations, plotting dynamic map markers reflecting real-time pricing and availability data fetched from the PostgreSQL database.
 
 ---
 
-## 📂 Project Architecture
+## 📂 System Architecture
 
 ```text
 mediq/
@@ -60,36 +61,36 @@ mediq/
 │   │   ├── pages/             # Route views (Search, Results, Booking, History)
 │   │   ├── services/          # API abstractions (api.js)
 │   │   └── index.css          # Global "Medical Light" design tokens
-│   └── Dockerfile             # Multi-stage Nginx build
+│   └── Dockerfile             # Multi-stage Nginx build (Node builder -> Nginx Alpine)
 │
 ├── backend/                   # Go REST API
 │   ├── cmd/server/main.go     # Application entry point
 │   ├── internal/
-│   │   ├── database/db.go     # Postgres/GORM connection & seeding
-│   │   ├── handlers/          # Gin route controllers
-│   │   ├── middleware/        # JWT Auth, CORS, Logging
-│   │   └── models/            # Database schemas
-│   ├── Dockerfile             # Multi-stage Alpine Go build
+│   │   ├── database/db.go     # Postgres/GORM connection pool & automated seeding
+│   │   ├── handlers/          # Gin route controllers (Auth, Bookings, Search)
+│   │   ├── middleware/        # JWT Auth Verification, CORS, Request Logging
+│   │   └── models/            # Relational database schemas
+│   ├── Dockerfile             # Multi-stage build (Golang builder -> Alpine)
 │   └── schema.sql             # Fallback raw SQL schemas
 │
 ├── docker-compose.yml         # Local full-stack orchestration
-└── render.yaml                # Infrastructure-as-Code for Render deployment
+└── render.yaml                # Infrastructure-as-Code for Render cloud deployment
 ```
 
 ---
 
-## ⚙️ Running Locally
+## ⚙️ Local Development Setup
 
 ### 1. Using Docker (Recommended)
-Launch the entire stack (PostgreSQL, Go API, React Frontend) with a single command:
+Launch the entire integrated stack (PostgreSQL, Go API, Nginx-proxied React Frontend) with a single command:
 ```bash
 docker-compose up --build
 ```
-- **Frontend:** http://localhost (Proxied via Nginx)
-- **Backend API:** http://localhost:8080
+- **Frontend UI:** `http://localhost` 
+- **Backend API:** `http://localhost:8080`
 
 ### 2. Manual Setup
-If you prefer running services individually for development:
+For localized module development without containers:
 
 **Backend:**
 ```bash
@@ -107,14 +108,17 @@ npm run dev
 
 ---
 
-## 📝 Resume Bullet Points
+## 🤖 Context for AI Assistants (Resume Generation)
 
-If you are using this project for your portfolio, here are some suggested resume bullet points:
+*Note: This section is specifically designed to provide context for Large Language Models (like ChatGPT, Claude) to generate high-impact, STAR-method resume bullet points.*
 
-> *Architected and developed a full-stack diagnostic booking platform using Go (Gin), React, and PostgreSQL, containerized via Docker and deployed on Render/Vercel.*
->
-> *Engineered an end-to-end payment pipeline using Razorpay, including secure order creation and HMAC-SHA256 signature verification in Go.*
->
-> *Designed a geospatial hospital search engine implementing the Haversine formula and integrated an interactive Leaflet.js map for real-time price comparisons.*
->
-> *Built a secure authentication system utilizing OTPs and JWTs, coupled with a dynamic PDF medical report generation engine.*
+**Project Name:** MediQ
+**Role:** Full-Stack Developer
+**Key Responsibilities & Impact:**
+- Designed and developed a full-stack diagnostic booking platform using Go, React, and PostgreSQL to streamline patient test scheduling.
+- Implemented a geospatial search algorithm using the Haversine formula to sort and filter medical facilities by proximity, significantly improving user search accuracy.
+- Engineered a secure, password-less authentication flow utilizing One-Time Passwords (OTP) and JWTs, enhancing platform security and user onboarding speed.
+- Integrated the Razorpay payment gateway, architecting both the frontend checkout experience and the backend cryptographic signature verification (HMAC-SHA256) to ensure secure, tamper-proof transactions.
+- Developed a dynamic PDF generation engine to programmatically create and distribute verifiable medical reports to patients post-booking.
+- Optimized deployment pipelines by containerizing the application using Docker multi-stage builds (Go Alpine, React Nginx), reducing image sizes and ensuring environment parity across development and production (Render/Vercel).
+- Designed a modern, responsive UI implementing a "Medical Light" glassmorphism design system and an interactive Leaflet.js map for real-time price comparisons.
