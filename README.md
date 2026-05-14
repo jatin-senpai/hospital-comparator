@@ -26,9 +26,9 @@ Built with scalability and modern user experience in mind, MediQ leverages a rob
 ### Backend Architecture
 - **Language:** Go (Golang) 1.21+ 
 - **Web Framework:** Gin Web Framework (high-performance HTTP routing)
-- **Database:** PostgreSQL (hosted via NeonDB)
+- **Database:** PostgreSQL (hosted on Render)
 - **ORM:** GORM for schema migrations and complex relational querying.
-- **Authentication:** Secure Phone-Number & OTP-based flow coupled with JWT (JSON Web Tokens) for stateless session management.
+- **Authentication:** Secure Email & Password-based flow coupled with JWT (JSON Web Tokens) for stateless session management.
 - **Security:** HMAC-SHA256 Signature Validation for Razorpay webhook verification.
 
 ### DevOps & Infrastructure
@@ -42,7 +42,7 @@ Built with scalability and modern user experience in mind, MediQ leverages a rob
 ## ✨ Core Technical Achievements
 
 - **Geospatial Search Engine:** Implemented a robust backend search algorithm using query normalization (seamlessly matching "x ray" to "X-Ray") and the **Haversine formula** to calculate and sort hospitals by proximity in real-time.
-- **Multi-Factor Authentication (OTP):** Engineered a highly secure, password-less login system utilizing One-Time Passwords (OTP) delivered via SMS, managed via secure JWT sessions.
+- **Secure Authentication:** Engineered a robust email and password login system, managed via secure JWT (JSON Web Tokens) sessions for stateless authentication.
 - **End-to-End Payment Pipeline:** Architected a secure payment flow with Razorpay. Handled backend order creation, frontend state management during checkout, and cryptographic signature verification (HMAC-SHA256) to prevent transaction tampering.
 - **Dynamic Medical Report Generation:** Built a customized engine to generate on-the-fly, downloadable PDF medical reports explicitly tied to confirmed booking reference numbers.
 - **Optimized Containerization:** Utilized Docker multi-stage builds. Reduced the Go backend image footprint using an `alpine` base and optimized the React SPA delivery using an Nginx reverse proxy.
@@ -117,7 +117,7 @@ npm run dev
 **Key Responsibilities & Impact:**
 - Designed and developed a full-stack diagnostic booking platform using Go, React, and PostgreSQL to streamline patient test scheduling.
 - Implemented a geospatial search algorithm using the Haversine formula to sort and filter medical facilities by proximity, significantly improving user search accuracy.
-- Engineered a secure, password-less authentication flow utilizing One-Time Passwords (OTP) and JWTs, enhancing platform security and user onboarding speed.
+- Engineered a secure email and password authentication flow utilizing JWTs, enhancing platform security and user session management.
 - Integrated the Razorpay payment gateway, architecting both the frontend checkout experience and the backend cryptographic signature verification (HMAC-SHA256) to ensure secure, tamper-proof transactions.
 - Developed a dynamic PDF generation engine to programmatically create and distribute verifiable medical reports to patients post-booking.
 - Optimized deployment pipelines by containerizing the application using Docker multi-stage builds (Go Alpine, React Nginx), reducing image sizes and ensuring environment parity across development and production (Render/Vercel).
