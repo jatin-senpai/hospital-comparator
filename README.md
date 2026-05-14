@@ -44,7 +44,6 @@ Built with scalability and modern user experience in mind, MediQ leverages a rob
 - **Geospatial Search Engine:** Implemented a robust backend search algorithm using query normalization (seamlessly matching "x ray" to "X-Ray") and the **Haversine formula** to calculate and sort hospitals by proximity in real-time.
 - **Secure Authentication:** Engineered a robust email and password login system, managed via secure JWT (JSON Web Tokens) sessions for stateless authentication.
 - **End-to-End Payment Pipeline:** Architected a secure payment flow with Razorpay. Handled backend order creation, frontend state management during checkout, and cryptographic signature verification (HMAC-SHA256) to prevent transaction tampering.
-- **Dynamic Medical Report Generation:** Built a customized engine to generate on-the-fly, downloadable PDF medical reports explicitly tied to confirmed booking reference numbers.
 - **Optimized Containerization:** Utilized Docker multi-stage builds. Reduced the Go backend image footprint using an `alpine` base and optimized the React SPA delivery using an Nginx reverse proxy.
 - **Real-Time Interactive Mapping:** Integrated Leaflet.js to render dynamic hospital locations, plotting dynamic map markers reflecting real-time pricing and availability data fetched from the PostgreSQL database.
 
@@ -119,6 +118,5 @@ npm run dev
 - Implemented a geospatial search algorithm using the Haversine formula to sort and filter medical facilities by proximity, significantly improving user search accuracy.
 - Engineered a secure email and password authentication flow utilizing JWTs, enhancing platform security and user session management.
 - Integrated the Razorpay payment gateway, architecting both the frontend checkout experience and the backend cryptographic signature verification (HMAC-SHA256) to ensure secure, tamper-proof transactions.
-- Developed a dynamic PDF generation engine to programmatically create and distribute verifiable medical reports to patients post-booking.
 - Optimized deployment pipelines by containerizing the application using Docker multi-stage builds (Go Alpine, React Nginx), reducing image sizes and ensuring environment parity across development and production (Render/Vercel).
 - Designed a modern, responsive UI implementing a "Medical Light" glassmorphism design system and an interactive Leaflet.js map for real-time price comparisons.
