@@ -51,17 +51,32 @@ export default function HospitalCard({ hospital, serviceId, cheapest, isSelected
           <div className={styles.priceContainer}>
             {isCheapest && <span className={styles.lowestBadge}>LOWEST PRICE</span>}
             <div className={styles.price}>₹{svc?.price?.toLocaleString() || '—'}</div>
-            <div className={styles.reportTime}>Report: {svc?.report_time || svc?.report || 'N/A'}</div>
           </div>
         </div>
 
         {/* Rating and review section */}
         {renderStars(hospital.rating)}
 
+        {/* Core Comparison Metrics Grid */}
+        <div className={styles.comparisonGrid}>
+          <div className={styles.metric}>
+            <span className={styles.metricLabel}>Price</span>
+            <span className={styles.metricValue}>₹{svc?.price?.toLocaleString() || '—'}</span>
+          </div>
+          <div className={styles.metric}>
+            <span className={styles.metricLabel}>Distance</span>
+            <span className={styles.metricValue}>{hospital.distance || 0} km</span>
+          </div>
+          <div className={styles.metric}>
+            <span className={styles.metricLabel}>Report Turnaround</span>
+            <span className={styles.metricValue}>{svc?.report_time || svc?.report || 'N/A'}</span>
+          </div>
+        </div>
+
         {/* Address and details */}
         <div className={styles.addressRow}>
           <span className={styles.icon}>📍</span>
-          <span className={styles.addressText}>{hospital.address} · <strong>{hospital.distance || 0} km away</strong></span>
+          <span className={styles.addressText}>{hospital.address}</span>
         </div>
 
         {/* Divider */}

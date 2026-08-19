@@ -98,7 +98,7 @@ export const api = {
         };
       }).filter(r => r.service_price !== null && r.distance_km < 50);
 
-      return { results, total: results.length, service };
+      return { results, total: results.length, service, isDemo: true };
     }
   },
 

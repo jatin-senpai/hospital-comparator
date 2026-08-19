@@ -252,7 +252,7 @@ export default function LandingPage({ onSearch, onSelectHospital, onSelectServic
       <section className={styles.proofSection}>
         <div className={styles.sectionHeading}>
           <h2 className={styles.sectionTitle}>Compare what actually matters.</h2>
-          <p className={styles.sectionSubtitle}>We compile real pricing spreads, geographic distances, and report turnaround speeds side-by-side.</p>
+          <p className={styles.sectionSubtitle}>Compare available prices, distance, and report turnaround side-by-side.</p>
         </div>
 
         <div className={styles.proofGrid}>
@@ -578,8 +578,8 @@ export default function LandingPage({ onSearch, onSelectHospital, onSelectServic
       {/* Hospital showcase list */}
       <section id="hospitals" className={styles.hospitalsSection}>
         <div className={styles.sectionHeading}>
-          <h2 className={styles.sectionTitle}>Partner diagnostic networks</h2>
-          <p className={styles.sectionSubtitle}>Accredited clinics, testing laboratories, and hospital centers in our network.</p>
+          <h2 className={styles.sectionTitle}>Sample diagnostic centers</h2>
+          <p className={styles.sectionSubtitle}>Demo clinic nodes, testing laboratories, and medical providers available in the system.</p>
         </div>
 
         <div className={styles.hospitalsGrid}>
@@ -591,10 +591,9 @@ export default function LandingPage({ onSearch, onSelectHospital, onSelectServic
             >
               <div className={styles.hospitalHead}>
                 <div className={styles.accBadge}>
-                  {Icons.shield()}
-                  <span>{h.badge || 'NABL Accredited'}</span>
+                  <span>Est. {h.established}</span>
                 </div>
-                <div className={styles.starsRow}>★ {h.rating}</div>
+                <div className={styles.starsRow}>★ {h.rating} ({h.reviews} reviews)</div>
               </div>
               
               <div className={styles.hospitalBody}>

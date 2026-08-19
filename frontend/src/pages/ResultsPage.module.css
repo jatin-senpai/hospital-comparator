@@ -369,6 +369,33 @@
   border-radius: var(--radius-sm);
 }
 
+.demoBanner {
+  background: rgba(37, 99, 235, 0.05);
+  color: var(--accent);
+  border-bottom: 1px solid rgba(37, 99, 235, 0.1);
+  padding: var(--spacing-3) var(--spacing-6);
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  letter-spacing: 0.2px;
+}
+
+.demoIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--bg-surface);
+  font-size: 9px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
 /* Mobile Floating Toggle */
 .mobileFloatingToggle {
   display: none;

@@ -13,6 +13,7 @@ export default function ResultsPage({ query, serviceId, city, onBook, onBack, on
   const [loaded, setLoaded] = useState(false)
   const [hoveredId, setHoveredId] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [isDemoMode, setIsDemoMode] = useState(false)
   const [mobileView, setMobileView] = useState('list') // 'list' | 'map'
   
   const cityData = city || CITIES[0]
@@ -22,6 +23,7 @@ export default function ResultsPage({ query, serviceId, city, onBook, onBack, on
       setLoading(true)
       try {
         const data = await api.searchHospitals(activeService, cityData.latitude, cityData.longitude)
+        setIsDemoMode(!!data.isDemo)
         const formatted = data.results.map(r => ({
           ...r.hospital,
           distance: r.distance_km,
@@ -51,6 +53,15 @@ export default function ResultsPage({ query, serviceId, city, onBook, onBack, on
     }
     fetchHospitals()
   }, [activeService, cityData])
+
+  useEffect(() => {
+    if (selected) {
+      const el = document.getElementById(`hospital-card-${selected.id}`)
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+      }
+    }
+  }, [selected])
 
   const service = SERVICES.find(s => s.id === activeService)
 
@@ -90,6 +101,13 @@ export default function ResultsPage({ query, serviceId, city, onBook, onBack, on
           </div>
         </div>
       </div>
+
+      {isDemoMode && (
+        <div className={styles.demoBanner}>
+          <span className={styles.demoIcon}>ℹ</span>
+          <span>Running in Local Mock Database Fallback. Pricing, availability, and distances are simulated demo values.</span>
+        </div>
+      )}
 
       {/* Dynamic service category horizontal filter strip */}
       <div className={styles.serviceStrip}>
@@ -172,6 +190,7 @@ export default function ResultsPage({ query, serviceId, city, onBook, onBack, on
               {sorted.map((hospital, i) => (
                 <div
                   key={hospital.id}
+                  id={`hospital-card-${hospital.id}`}
                   style={{ animationDelay: `${i * 0.05}s` }}
                   className={`${styles.cardWrap} ${loaded ? styles.cardVisible : ''}`}
                 >
