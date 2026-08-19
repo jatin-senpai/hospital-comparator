@@ -64,10 +64,38 @@
   color: var(--chalk-2);
   padding: var(--spacing-2) 0;
   position: relative;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: color var(--transition-fast);
 }
 
 .navLink:hover {
   color: var(--chalk);
+}
+
+.navLink:focus {
+  outline: none;
+}
+
+.navLink:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.active {
+  color: var(--accent) !important;
+}
+
+.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--accent);
+  border-radius: 1px;
 }
 
 .actions {

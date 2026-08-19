@@ -4,16 +4,16 @@
   overflow-x: hidden;
 }
 
-/* Hero Section */
+/* Hero Section - Reduced vertical whitespace by 12% */
 .heroSection {
   max-width: 800px;
   margin: 0 auto;
-  padding: var(--spacing-16) var(--spacing-6) var(--spacing-8) var(--spacing-6);
+  padding: var(--spacing-12) var(--spacing-6) var(--spacing-6) var(--spacing-6);
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-6);
+  gap: var(--spacing-5);
 }
 
 .badge {
@@ -63,7 +63,7 @@
 .heroBtns {
   display: flex;
   gap: var(--spacing-4);
-  margin-top: var(--spacing-2);
+  margin-top: var(--spacing-1);
 }
 
 .primaryBtn {
@@ -102,7 +102,7 @@
 .centerpieceSection {
   max-width: 1040px;
   margin: 0 auto;
-  padding: 0 var(--spacing-6) var(--spacing-16) var(--spacing-6);
+  padding: 0 var(--spacing-6) var(--spacing-12) var(--spacing-6);
 }
 
 .searchWidget {
@@ -430,7 +430,7 @@
   margin-top: 2px;
 }
 
-/* Capability Section */
+/* Capability Section - Restyled to show Decision Matrix Grid */
 .capabilitySection {
   max-width: 1040px;
   margin: 0 auto;
@@ -441,11 +441,17 @@
   background: var(--bg-surface);
   border: var(--border);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-10) var(--spacing-8);
+  padding: var(--spacing-8);
   display: grid;
-  grid-template-columns: 1.2fr 1fr 1.2fr;
-  gap: var(--spacing-8);
+  grid-template-columns: 1fr 1.2fr;
+  gap: var(--spacing-10);
   align-items: center;
+}
+
+.leftColInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
 }
 
 .leftLabel {
@@ -463,23 +469,52 @@
   line-height: 1.5;
 }
 
-.capabilityMetrics {
+.decisionMatrixContainer {
+  background: var(--bg-page);
+  border: var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.matrixHeader {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1fr;
+  padding: var(--spacing-2) var(--spacing-4);
+  background: rgba(15, 23, 42, 0.03);
+  border-bottom: var(--border);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--chalk-3);
+  letter-spacing: 0.5px;
+}
+
+.matrixBody {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-3);
 }
 
-.metricRow {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-3);
-  font-size: 13px;
+.matrixRow {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1fr;
+  padding: var(--spacing-3) var(--spacing-4);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 12px;
   color: var(--chalk-2);
+  align-items: center;
 }
 
-.metricRow svg {
-  color: var(--success);
-  flex-shrink: 0;
+.matrixRow:last-child {
+  border-bottom: none;
+}
+
+.mName {
+  font-weight: 600;
+  color: var(--chalk);
+}
+
+.mPrice {
+  font-weight: 700;
+  color: var(--accent);
 }
 
 /* Interactive workflow stepper */
@@ -894,7 +929,7 @@
 
   .capabilityContent {
     grid-template-columns: 1fr;
-    gap: var(--spacing-4);
+    gap: var(--spacing-6);
   }
 
   .interactiveWorkflow {

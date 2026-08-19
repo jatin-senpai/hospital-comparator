@@ -9,12 +9,12 @@ import ResultsPage from './pages/ResultsPage'
 import BookingPage from './pages/BookingPage'
 import HistoryPage from './pages/HistoryPage'
 import { AuthContext } from './context/AuthContext'
-import { HOSPITALS } from './services/mockData'
+import { HOSPITALS, CITIES } from './services/mockData'
 
 export default function App() {
   const { user, logout } = useContext(AuthContext)
   const [page, setPage] = useState('landing')
-  const [searchState, setSearchState] = useState({ query: '', serviceId: 'blood', city: null })
+  const [searchState, setSearchState] = useState({ query: 'MRI Scan', serviceId: 'mri', city: CITIES[0] })
   const [bookingState, setBookingState] = useState({ hospital: null, serviceId: '' })
   
   // Custom Overlays State
@@ -91,6 +91,7 @@ export default function App() {
       {page !== 'booking' && (
         <Navbar
           user={user}
+          page={page}
           onHistory={handleHistoryAccess}
           onLogout={logout}
           onOpenAuth={() => { setAuthCallback(null); setAuthModalOpen(true); }}

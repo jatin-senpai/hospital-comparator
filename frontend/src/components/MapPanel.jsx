@@ -65,11 +65,13 @@ export default function MapPanel({ hospitals, serviceId, selected, hoveredId, ci
       const coords = [h.latitude, h.longitude]
       if (!coords[0] || !coords[1]) return
 
-      const price = h.services ? h.services[serviceId]?.price : null;
+      const svc = h.services ? h.services[serviceId] : null;
+      const price = svc ? svc.price : null;
+      const report = svc ? svc.report : '24 hrs';
       const isSelected = selected?.id === h.id
       const isHovered = hoveredId === h.id
 
-      // Airbnb-style pricing tag markers
+      // Pricing tag markers
       const bg = isSelected ? '#059669' : isHovered ? '#2563eb' : '#ffffff';
       const color = isSelected || isHovered ? '#ffffff' : '#0f172a';
       const border = isSelected ? '#047857' : isHovered ? '#1d4ed8' : '#cbd5e1';
@@ -105,14 +107,59 @@ export default function MapPanel({ hospitals, serviceId, selected, hoveredId, ci
         iconAnchor: [30, 13],
       })
 
+      // Popup content card
+      const popupHtml = `
+        <div style="
+          padding: 4px;
+          font-family: 'Inter', sans-serif;
+          min-width: 150px;
+          display: flex;
+          flex-direction: column;
+          gap: 3px;
+        ">
+          <strong style="font-size: 12px; color: var(--chalk);">${h.name}</strong>
+          <span style="font-size: 13px; font-weight: 700; color: var(--accent);">₹${price?.toLocaleString() || '?'}</span>
+          <span style="font-size: 11px; color: var(--chalk-2);">📍 ${h.distance} km away</span>
+          <span style="font-size: 11px; color: var(--chalk-2);">⏰ ${report} report</span>
+          <button 
+            id="popup-btn-${h.id}"
+            style="
+              margin-top: 6px;
+              background: var(--primary);
+              color: white;
+              border: none;
+              border-radius: 4px;
+              padding: 4px 8px;
+              font-size: 10px;
+              font-weight: 600;
+              cursor: pointer;
+              width: 100%;
+              text-align: center;
+            "
+          >
+            Select provider
+          </button>
+        </div>
+      `;
+
       const marker = L.marker(coords, { icon })
         .addTo(map)
+        .bindPopup(popupHtml, { closeButton: false, offset: [0, -10] })
         .on('click', () => onSelect(h))
 
       markersRef.current[h.id] = marker
+
+      // Auto open popup if hovered/selected from left list
+      if (isHovered || isSelected) {
+        setTimeout(() => {
+          if (marker && map.hasLayer(marker)) {
+            marker.openPopup();
+          }
+        }, 50);
+      }
     })
 
-    // User location marker based on city center
+    // User location marker
     const userIcon = L.divIcon({
       className: '',
       html: `
@@ -134,10 +181,33 @@ export default function MapPanel({ hospitals, serviceId, selected, hoveredId, ci
     })
     L.marker(CENTER, { icon: userIcon }).addTo(map)
 
-    // Center map if city changed
     map.setView(CENTER, 13)
 
   }, [mapReady, hospitals, serviceId, selected, hoveredId, city])
+
+  // Click event delegation to handle popup button selections
+  useEffect(() => {
+    const handlePopupClick = (e) => {
+      const btn = e.target.closest('[id^="popup-btn-"]');
+      if (btn) {
+        const id = parseInt(btn.id.replace('popup-btn-', ''));
+        const hospital = hospitals.find(x => x.id === id);
+        if (hospital) {
+          onSelect(hospital);
+        }
+      }
+    };
+
+    const container = mapRef.current;
+    if (container) {
+      container.addEventListener('click', handlePopupClick);
+    }
+    return () => {
+      if (container) {
+        container.removeEventListener('click', handlePopupClick);
+      }
+    };
+  }, [hospitals, mapReady])
 
   // Pan to selected
   useEffect(() => {
@@ -188,4 +258,3 @@ export default function MapPanel({ hospitals, serviceId, selected, hoveredId, ci
     </div>
   )
 }
-

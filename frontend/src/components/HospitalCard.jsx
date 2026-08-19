@@ -1,6 +1,6 @@
 import styles from './HospitalCard.module.css'
 
-export default function HospitalCard({ hospital, serviceId, cheapest, isSelected, onClick, onHover, onBook }) {
+export default function HospitalCard({ hospital, serviceId, cheapest, isSelected, isHovered, onClick, onHover, onBook }) {
   const svc = hospital.services ? hospital.services[serviceId] : null
   const isCheapest = svc?.price && svc.price === cheapest
   
@@ -31,7 +31,7 @@ export default function HospitalCard({ hospital, serviceId, cheapest, isSelected
 
   return (
     <div
-      className={`${styles.card} ${isSelected ? styles.selected : ''}`}
+      className={`${styles.card} ${isSelected ? styles.selected : ''} ${isHovered ? styles.hovered : ''}`}
       onClick={onClick}
       onMouseEnter={() => onHover?.(hospital.id)}
       onMouseLeave={() => onHover?.(null)}

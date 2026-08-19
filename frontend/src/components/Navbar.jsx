@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styles from './Navbar.module.css';
 
-export default function Navbar({ user, onHistory, onLogout, onOpenAuth, onNavigate }) {
+export default function Navbar({ user, onHistory, onLogout, onOpenAuth, onNavigate, page }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -12,6 +12,8 @@ export default function Navbar({ user, onHistory, onLogout, onOpenAuth, onNaviga
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const isCompareActive = page === 'landing' || page === 'results';
 
   return (
     <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
@@ -24,7 +26,12 @@ export default function Navbar({ user, onHistory, onLogout, onOpenAuth, onNaviga
 
         {/* Desktop Links */}
         <div className={styles.menu}>
-          <button className={styles.navLink} onClick={() => onNavigate('landing')}>Compare</button>
+          <button 
+            className={`${styles.navLink} ${isCompareActive ? styles.active : ''}`} 
+            onClick={() => onNavigate('landing')}
+          >
+            Compare
+          </button>
           <button className={styles.navLink} onClick={() => onNavigate('landing', 'services')}>Services</button>
           <button className={styles.navLink} onClick={() => onNavigate('landing', 'hospitals')}>Hospitals</button>
           <button className={styles.navLink} onClick={() => onNavigate('landing', 'how-it-works')}>How it works</button>

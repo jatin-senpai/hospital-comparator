@@ -24,6 +24,13 @@
   box-shadow: var(--shadow-md);
 }
 
+.hovered {
+  border-color: var(--border-hover) !important;
+  background: rgba(15, 23, 42, 0.01);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
 .mainInfo {
   display: flex;
   flex-direction: column;

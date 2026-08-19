@@ -137,14 +137,35 @@ export default function ResultsPage({ query, serviceId, city, onBook, onBack, on
 
           {/* Cards list */}
           {loading ? (
-            <div className={styles.loadingContainer}>
-              <div className={styles.spinner} />
-              <p>Scanning local centers...</p>
+            <div className={styles.skeletonList}>
+              {[1, 2, 3].map(i => (
+                <div key={i} className={styles.skeletonCard}>
+                  <div className={styles.skeletonHeader}>
+                    <div className={styles.skeletonTitle} />
+                    <div className={styles.skeletonPrice} />
+                  </div>
+                  <div className={styles.skeletonMeta} />
+                  <div className={styles.skeletonAddress} />
+                  <div className={styles.skeletonDivider} />
+                  <div className={styles.skeletonFooter}>
+                    <div className={styles.skeletonBadge} />
+                    <div className={styles.skeletonBtn} />
+                  </div>
+                </div>
+              ))}
             </div>
           ) : sorted.length === 0 ? (
             <div className={styles.emptyContainer}>
-              <h3>No diagnostic centers found</h3>
+              <h3>No providers found for this service in this location.</h3>
               <p>Try exploring another test procedure or changing your selected city location.</p>
+              <div className={styles.emptyActions}>
+                <button className={styles.emptyBtn} onClick={() => setActiveService('blood')}>
+                  Try another service
+                </button>
+                <button className={styles.emptyBtn} onClick={onBack}>
+                  Change location
+                </button>
+              </div>
             </div>
           ) : (
             <div className={styles.cards}>

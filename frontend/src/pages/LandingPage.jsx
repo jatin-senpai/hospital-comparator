@@ -82,7 +82,7 @@ export default function LandingPage({ onSearch, onSelectHospital, onSelectServic
           <span className={styles.highlight}>before you get there.</span>
         </h1>
         <p className={styles.sub}>
-          Compare diagnostic prices, distance, availability, and turnaround times before choosing where to go. Avoid paying extra on diagnostic procedures.
+          Compare available prices, distance, and report turnaround side-by-side before choosing where to go. Avoid paying extra on diagnostic procedures.
         </p>
 
         <div className={styles.heroBtns}>
@@ -258,40 +258,47 @@ export default function LandingPage({ onSearch, onSelectHospital, onSelectServic
         <div className={styles.proofGrid}>
           {/* Price proof Column */}
           <div className={styles.proofCol}>
-            <div className={styles.proofColHeader}>PRICE COMPARISON</div>
+            <div className={styles.proofColHeader}>PRICE COMPARISON (MRI SCAN)</div>
             <div className={styles.proofVisualList}>
               <div className={styles.proofVisualRow} style={{ color: 'var(--success)' }}>
-                <span className={styles.proofLabel}>Lowest Rate (Max Life)</span>
+                <span className={styles.proofLabel}>Max LifeCare Center (Lowest)</span>
                 <span className={styles.proofBarContainer}>
-                  <span className={styles.proofBar} style={{ width: '60%', backgroundColor: 'var(--success)' }} />
+                  <span className={styles.proofBar} style={{ width: '67%', backgroundColor: 'var(--success)' }} />
                 </span>
                 <span className={styles.proofVal}>₹3,500</span>
               </div>
               <div className={styles.proofVisualRow}>
-                <span className={styles.proofLabel}>Average (Fortis Hub)</span>
+                <span className={styles.proofLabel}>Fortis Health Hub</span>
                 <span className={styles.proofBarContainer}>
-                  <span className={styles.proofBar} style={{ width: '80%', backgroundColor: 'var(--chalk-2)' }} />
+                  <span className={styles.proofBar} style={{ width: '76%', backgroundColor: 'var(--chalk-2)' }} />
                 </span>
                 <span className={styles.proofVal}>₹3,999</span>
               </div>
               <div className={styles.proofVisualRow}>
-                <span className={styles.proofLabel}>Highest (Apollo Diagnostics)</span>
+                <span className={styles.proofLabel}>Apollo Diagnostics</span>
+                <span className={styles.proofBarContainer}>
+                  <span className={styles.proofBar} style={{ width: '86%', backgroundColor: 'var(--chalk-2)' }} />
+                </span>
+                <span className={styles.proofVal}>₹4,500</span>
+              </div>
+              <div className={styles.proofVisualRow}>
+                <span className={styles.proofLabel}>Medanta Diagnostics (Highest)</span>
                 <span className={styles.proofBarContainer}>
                   <span className={styles.proofBar} style={{ width: '100%', backgroundColor: 'var(--chalk-2)' }} />
                 </span>
-                <span className={styles.proofVal}>₹4,500</span>
+                <span className={styles.proofVal}>₹5,200</span>
               </div>
             </div>
           </div>
 
           {/* Distance proof Column */}
           <div className={styles.proofCol}>
-            <div className={styles.proofColHeader}>PROXIMITY (JAIPUR)</div>
+            <div className={styles.proofColHeader}>PROXIMITY FROM CENTER (JAIPUR)</div>
             <div className={styles.proofVisualList}>
               <div className={styles.proofVisualRow}>
-                <span className={styles.proofLabel}>Apollo Diagnostics</span>
+                <span className={styles.proofLabel}>Apollo Diagnostics (Closest)</span>
                 <span className={styles.proofBarContainer}>
-                  <span className={styles.proofBar} style={{ width: '35%', backgroundColor: 'var(--accent)' }} />
+                  <span className={styles.proofBar} style={{ width: '29%', backgroundColor: 'var(--accent)' }} />
                 </span>
                 <span className={styles.proofVal}>1.2 km</span>
               </div>
@@ -305,26 +312,40 @@ export default function LandingPage({ onSearch, onSelectHospital, onSelectServic
               <div className={styles.proofVisualRow}>
                 <span className={styles.proofLabel}>Max LifeCare Center</span>
                 <span className={styles.proofBarContainer}>
-                  <span className={styles.proofBar} style={{ width: '90%', backgroundColor: 'var(--accent)' }} />
+                  <span className={styles.proofBar} style={{ width: '82%', backgroundColor: 'var(--accent)' }} />
                 </span>
                 <span className={styles.proofVal}>3.4 km</span>
+              </div>
+              <div className={styles.proofVisualRow}>
+                <span className={styles.proofLabel}>Medanta Diagnostics</span>
+                <span className={styles.proofBarContainer}>
+                  <span className={styles.proofBar} style={{ width: '100%', backgroundColor: 'var(--accent)' }} />
+                </span>
+                <span className={styles.proofVal}>4.1 km</span>
               </div>
             </div>
           </div>
 
           {/* Turnaround proof Column */}
           <div className={styles.proofCol}>
-            <div className={styles.proofColHeader}>REPORT TURNAROUND TIME</div>
+            <div className={styles.proofColHeader}>REPORT DELIVERY TURNAROUND</div>
             <div className={styles.proofVisualList}>
+              <div className={styles.proofVisualRow} style={{ color: 'var(--success)' }}>
+                <span className={styles.proofLabel}>Medanta Diagnostics (Fastest)</span>
+                <span className={styles.proofBarContainer}>
+                  <span className={styles.proofBar} style={{ width: '25%', backgroundColor: 'var(--success)' }} />
+                </span>
+                <span className={styles.proofVal}>12 hrs</span>
+              </div>
               <div className={styles.proofVisualRow}>
-                <span className={styles.proofLabel}>Apollo Diagnostics</span>
+                <span className={styles.proofLabel}>Fortis Health Hub</span>
                 <span className={styles.proofBarContainer}>
                   <span className={styles.proofBar} style={{ width: '50%', backgroundColor: 'var(--primary)' }} />
                 </span>
                 <span className={styles.proofVal}>24 hrs</span>
               </div>
               <div className={styles.proofVisualRow}>
-                <span className={styles.proofLabel}>Fortis Health Hub</span>
+                <span className={styles.proofLabel}>Apollo Diagnostics</span>
                 <span className={styles.proofBarContainer}>
                   <span className={styles.proofBar} style={{ width: '50%', backgroundColor: 'var(--primary)' }} />
                 </span>
@@ -345,23 +366,46 @@ export default function LandingPage({ onSearch, onSelectHospital, onSelectServic
       {/* "One Decision, All the Context" Capability Showcase */}
       <section className={styles.capabilitySection}>
         <div className={styles.capabilityContent}>
-          <div className={styles.leftLabel}>One decision, all the context.</div>
-          <p className={styles.capabilityText}>
-            We combine clinical laboratory directories with location algorithms to ensure you receive verified accreditation reviews, competitive rates, and direct calendar slot scheduling.
-          </p>
+          <div className={styles.leftColInfo}>
+            <div className={styles.leftLabel}>One decision, all the context.</div>
+            <p className={styles.capabilityText}>
+              We combine diagnostic pricing parameters, geographical distance calculations, and laboratory turnaround times into a single visual summary.
+            </p>
+          </div>
 
-          <div className={styles.capabilityMetrics}>
-            <div className={styles.metricRow}>
-              {Icons.check()}
-              <span>Compare dynamic pricing lists across verified centers.</span>
+          {/* Compact decision matrix using actual Jaipur MRI rates */}
+          <div className={styles.decisionMatrixContainer}>
+            <div className={styles.matrixHeader}>
+              <span>PROVIDER</span>
+              <span>PRICE</span>
+              <span>DISTANCE</span>
+              <span>TURNAROUND</span>
             </div>
-            <div className={styles.metricRow}>
-              {Icons.check()}
-              <span>View accreditations (NABH, NABL, CAP, ISO) on profiles.</span>
-            </div>
-            <div className={styles.metricRow}>
-              {Icons.check()}
-              <span>Review verified patient ratings without fabrication.</span>
+            <div className={styles.matrixBody}>
+              <div className={styles.matrixRow}>
+                <span className={styles.mName}>Max LifeCare</span>
+                <span className={styles.mPrice}>₹3,500</span>
+                <span className={styles.mDist}>3.4 km</span>
+                <span className={styles.mTime}>48 hrs</span>
+              </div>
+              <div className={styles.matrixRow}>
+                <span className={styles.mName}>Fortis Hub</span>
+                <span className={styles.mPrice}>₹3,999</span>
+                <span className={styles.mDist}>2.7 km</span>
+                <span className={styles.mTime}>24 hrs</span>
+              </div>
+              <div className={styles.matrixRow}>
+                <span className={styles.mName}>Apollo Diag.</span>
+                <span className={styles.mPrice}>₹4,500</span>
+                <span className={styles.mDist}>1.2 km</span>
+                <span className={styles.mTime}>24 hrs</span>
+              </div>
+              <div className={styles.matrixRow}>
+                <span className={styles.mName}>Medanta Diag.</span>
+                <span className={styles.mPrice}>₹5,200</span>
+                <span className={styles.mDist}>4.1 km</span>
+                <span className={styles.mTime}>12 hrs</span>
+              </div>
             </div>
           </div>
         </div>
@@ -371,7 +415,7 @@ export default function LandingPage({ onSearch, onSelectHospital, onSelectServic
       <section id="how-it-works" className={styles.timelineSection}>
         <div className={styles.sectionHeading}>
           <h2 className={styles.sectionTitle}>How it works</h2>
-          <p className={styles.sectionSubtitle}>Select the steps below to preview our diagnostic booking workflow simulation.</p>
+          <p className={styles.sectionSubtitle}>Select the steps below to preview our diagnostic booking workflow.</p>
         </div>
 
         <div className={styles.interactiveWorkflow}>
@@ -535,7 +579,7 @@ export default function LandingPage({ onSearch, onSelectHospital, onSelectServic
       <section id="hospitals" className={styles.hospitalsSection}>
         <div className={styles.sectionHeading}>
           <h2 className={styles.sectionTitle}>Partner diagnostic networks</h2>
-          <p className={styles.sectionSubtitle}>Accredited clinics, testing laboratories, and verified hospital centers in our network.</p>
+          <p className={styles.sectionSubtitle}>Accredited clinics, testing laboratories, and hospital centers in our network.</p>
         </div>
 
         <div className={styles.hospitalsGrid}>
