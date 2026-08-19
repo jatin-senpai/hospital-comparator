@@ -148,7 +148,6 @@ export default function ResultsPage({ query, serviceId, city, onBook, onBack, on
               >
                 <option value="distance">Distance</option>
                 <option value="price">Price</option>
-                <option value="rating">Rating</option>
               </select>
             </div>
           </div>

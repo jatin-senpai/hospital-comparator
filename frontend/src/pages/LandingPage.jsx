@@ -203,11 +203,9 @@ export default function LandingPage({ onSearch, onSelectHospital, onSelectServic
                         {r.price === minPrice && <span className={styles.lowestBadge}>LOWEST</span>}
                       </div>
                       <div className={styles.hMetaRow}>
-                        <span>★ {r.rating}</span>
+                        <span>{r.distance} km away</span>
                         <span>·</span>
-                        <span>{r.distance} km</span>
-                        <span>·</span>
-                        <span>{r.report}</span>
+                        <span>{r.report} turnaround</span>
                       </div>
                     </div>
                     <div className={styles.priceDetails}>
@@ -304,71 +302,49 @@ export default function LandingPage({ onSearch, onSelectHospital, onSelectServic
         <div className={styles.proofGrid}>
           {/* Price proof Column */}
           <div className={styles.proofCol}>
-            <div className={styles.proofColHeader}>PRICE COMPARISON (MRI SCAN)</div>
+            <div className={styles.proofColHeader}>PRICE COMPARISON ({activeService.label.toUpperCase()})</div>
             <div className={styles.proofVisualList}>
-              <div className={styles.proofVisualRow} style={{ color: 'var(--success)' }}>
-                <span className={styles.proofLabel}>Max LifeCare Center (Lowest)</span>
-                <span className={styles.proofBarContainer}>
-                  <span className={styles.proofBar} style={{ width: '67%', backgroundColor: 'var(--success)' }} />
-                </span>
-                <span className={styles.proofVal}>₹3,500</span>
-              </div>
-              <div className={styles.proofVisualRow}>
-                <span className={styles.proofLabel}>Fortis Health Hub</span>
-                <span className={styles.proofBarContainer}>
-                  <span className={styles.proofBar} style={{ width: '76%', backgroundColor: 'var(--chalk-2)' }} />
-                </span>
-                <span className={styles.proofVal}>₹3,999</span>
-              </div>
-              <div className={styles.proofVisualRow}>
-                <span className={styles.proofLabel}>Apollo Diagnostics</span>
-                <span className={styles.proofBarContainer}>
-                  <span className={styles.proofBar} style={{ width: '86%', backgroundColor: 'var(--chalk-2)' }} />
-                </span>
-                <span className={styles.proofVal}>₹4,500</span>
-              </div>
-              <div className={styles.proofVisualRow}>
-                <span className={styles.proofLabel}>Medanta Diagnostics (Highest)</span>
-                <span className={styles.proofBarContainer}>
-                  <span className={styles.proofBar} style={{ width: '100%', backgroundColor: 'var(--chalk-2)' }} />
-                </span>
-                <span className={styles.proofVal}>₹5,200</span>
-              </div>
+              {previewResults.map(r => {
+                const maxPrice = Math.max(...previewResults.map(x => x.price), 1);
+                const percent = Math.round((r.price / maxPrice) * 100);
+                const isMin = r.price === minPrice;
+                return (
+                  <div key={r.id} className={styles.proofVisualRow} style={isMin ? { color: 'var(--success)' } : {}}>
+                    <span className={styles.proofLabel}>{r.name} {isMin ? '(Lowest)' : ''}</span>
+                    <span className={styles.proofBarContainer}>
+                      <span className={styles.proofBar} style={{ width: `${percent}%`, backgroundColor: isMin ? 'var(--success)' : 'var(--chalk-2)' }} />
+                    </span>
+                    <span className={styles.proofVal}>₹{r.price.toLocaleString()}</span>
+                  </div>
+                );
+              })}
+              {previewResults.length === 0 && <div style={{ fontSize: '11px', color: 'var(--chalk-3)' }}>No data available</div>}
             </div>
           </div>
 
           {/* Distance proof Column */}
           <div className={styles.proofCol}>
-            <div className={styles.proofColHeader}>PROXIMITY FROM CENTER (JAIPUR)</div>
+            <div className={styles.proofColHeader}>PROXIMITY FROM CENTER ({activeCity.name.toUpperCase()})</div>
             <div className={styles.proofVisualList}>
-              <div className={styles.proofVisualRow}>
-                <span className={styles.proofLabel}>Apollo Diagnostics (Closest)</span>
-                <span className={styles.proofBarContainer}>
-                  <span className={styles.proofBar} style={{ width: '29%', backgroundColor: 'var(--accent)' }} />
-                </span>
-                <span className={styles.proofVal}>1.2 km</span>
-              </div>
-              <div className={styles.proofVisualRow}>
-                <span className={styles.proofLabel}>Fortis Health Hub</span>
-                <span className={styles.proofBarContainer}>
-                  <span className={styles.proofBar} style={{ width: '65%', backgroundColor: 'var(--accent)' }} />
-                </span>
-                <span className={styles.proofVal}>2.7 km</span>
-              </div>
-              <div className={styles.proofVisualRow}>
-                <span className={styles.proofLabel}>Max LifeCare Center</span>
-                <span className={styles.proofBarContainer}>
-                  <span className={styles.proofBar} style={{ width: '82%', backgroundColor: 'var(--accent)' }} />
-                </span>
-                <span className={styles.proofVal}>3.4 km</span>
-              </div>
-              <div className={styles.proofVisualRow}>
-                <span className={styles.proofLabel}>Medanta Diagnostics</span>
-                <span className={styles.proofBarContainer}>
-                  <span className={styles.proofBar} style={{ width: '100%', backgroundColor: 'var(--accent)' }} />
-                </span>
-                <span className={styles.proofVal}>4.1 km</span>
-              </div>
+              {(() => {
+                const sortedByDistance = [...previewResults].sort((a, b) => a.distance - b.distance);
+                const maxDist = Math.max(...previewResults.map(x => x.distance), 1);
+                const minDist = sortedByDistance.length ? sortedByDistance[0].distance : 0;
+                return sortedByDistance.map(r => {
+                  const percent = Math.round((r.distance / maxDist) * 100);
+                  const isMin = r.distance === minDist;
+                  return (
+                    <div key={r.id} className={styles.proofVisualRow}>
+                      <span className={styles.proofLabel}>{r.name} {isMin ? '(Closest)' : ''}</span>
+                      <span className={styles.proofBarContainer}>
+                        <span className={styles.proofBar} style={{ width: `${percent}%`, backgroundColor: 'var(--accent)' }} />
+                      </span>
+                      <span className={styles.proofVal}>{r.distance} km</span>
+                    </div>
+                  );
+                });
+              })()}
+              {previewResults.length === 0 && <div style={{ fontSize: '11px', color: 'var(--chalk-3)' }}>No data available</div>}
             </div>
           </div>
 
@@ -376,34 +352,31 @@ export default function LandingPage({ onSearch, onSelectHospital, onSelectServic
           <div className={styles.proofCol}>
             <div className={styles.proofColHeader}>REPORT DELIVERY TURNAROUND</div>
             <div className={styles.proofVisualList}>
-              <div className={styles.proofVisualRow} style={{ color: 'var(--success)' }}>
-                <span className={styles.proofLabel}>Medanta Diagnostics (Fastest)</span>
-                <span className={styles.proofBarContainer}>
-                  <span className={styles.proofBar} style={{ width: '25%', backgroundColor: 'var(--success)' }} />
-                </span>
-                <span className={styles.proofVal}>12 hrs</span>
-              </div>
-              <div className={styles.proofVisualRow}>
-                <span className={styles.proofLabel}>Fortis Health Hub</span>
-                <span className={styles.proofBarContainer}>
-                  <span className={styles.proofBar} style={{ width: '50%', backgroundColor: 'var(--primary)' }} />
-                </span>
-                <span className={styles.proofVal}>24 hrs</span>
-              </div>
-              <div className={styles.proofVisualRow}>
-                <span className={styles.proofLabel}>Apollo Diagnostics</span>
-                <span className={styles.proofBarContainer}>
-                  <span className={styles.proofBar} style={{ width: '50%', backgroundColor: 'var(--primary)' }} />
-                </span>
-                <span className={styles.proofVal}>24 hrs</span>
-              </div>
-              <div className={styles.proofVisualRow} style={{ color: 'var(--warning)' }}>
-                <span className={styles.proofLabel}>Max LifeCare Center</span>
-                <span className={styles.proofBarContainer}>
-                  <span className={styles.proofBar} style={{ width: '100%', backgroundColor: 'var(--warning)' }} />
-                </span>
-                <span className={styles.proofVal}>48 hrs</span>
-              </div>
+              {(() => {
+                const parseHours = (str) => {
+                  const match = str.match(/(\d+)\s*(hr|day)/i);
+                  if (!match) return 24;
+                  const val = parseInt(match[1]);
+                  return match[2].toLowerCase().startsWith('day') ? val * 24 : val;
+                };
+                const sortedByTime = [...previewResults].sort((a, b) => parseHours(a.report) - parseHours(b.report));
+                const maxTime = Math.max(...previewResults.map(x => parseHours(x.report)), 1);
+                const minTime = sortedByTime.length ? parseHours(sortedByTime[0].report) : 0;
+                return sortedByTime.map(r => {
+                  const percent = Math.round((parseHours(r.report) / maxTime) * 100);
+                  const isMin = parseHours(r.report) === minTime;
+                  return (
+                    <div key={r.id} className={styles.proofVisualRow} style={isMin ? { color: 'var(--success)' } : {}}>
+                      <span className={styles.proofLabel}>{r.name} {isMin ? '(Fastest)' : ''}</span>
+                      <span className={styles.proofBarContainer}>
+                        <span className={styles.proofBar} style={{ width: `${percent}%`, backgroundColor: isMin ? 'var(--success)' : 'var(--primary)' }} />
+                      </span>
+                      <span className={styles.proofVal}>{r.report}</span>
+                    </div>
+                  );
+                });
+              })()}
+              {previewResults.length === 0 && <div style={{ fontSize: '11px', color: 'var(--chalk-3)' }}>No data available</div>}
             </div>
           </div>
         </div>
@@ -419,7 +392,6 @@ export default function LandingPage({ onSearch, onSelectHospital, onSelectServic
             </p>
           </div>
 
-          {/* Compact decision matrix using actual Jaipur MRI rates */}
           <div className={styles.decisionMatrixContainer}>
             <div className={styles.matrixHeader}>
               <span>PROVIDER</span>
@@ -428,30 +400,19 @@ export default function LandingPage({ onSearch, onSelectHospital, onSelectServic
               <span>TURNAROUND</span>
             </div>
             <div className={styles.matrixBody}>
-              <div className={styles.matrixRow}>
-                <span className={styles.mName}>Max LifeCare</span>
-                <span className={styles.mPrice}>₹3,500</span>
-                <span className={styles.mDist}>3.4 km</span>
-                <span className={styles.mTime}>48 hrs</span>
-              </div>
-              <div className={styles.matrixRow}>
-                <span className={styles.mName}>Fortis Hub</span>
-                <span className={styles.mPrice}>₹3,999</span>
-                <span className={styles.mDist}>2.7 km</span>
-                <span className={styles.mTime}>24 hrs</span>
-              </div>
-              <div className={styles.matrixRow}>
-                <span className={styles.mName}>Apollo Diag.</span>
-                <span className={styles.mPrice}>₹4,500</span>
-                <span className={styles.mDist}>1.2 km</span>
-                <span className={styles.mTime}>24 hrs</span>
-              </div>
-              <div className={styles.matrixRow}>
-                <span className={styles.mName}>Medanta Diag.</span>
-                <span className={styles.mPrice}>₹5,200</span>
-                <span className={styles.mDist}>4.1 km</span>
-                <span className={styles.mTime}>12 hrs</span>
-              </div>
+              {previewResults.map(r => (
+                <div key={r.id} className={styles.matrixRow}>
+                  <span className={styles.mName}>{r.name}</span>
+                  <span className={styles.mPrice}>₹{r.price.toLocaleString()}</span>
+                  <span className={styles.mDist}>{r.distance} km</span>
+                  <span className={styles.mTime}>{r.report}</span>
+                </div>
+              ))}
+              {previewResults.length === 0 && (
+                <div className={styles.matrixRow} style={{ gridTemplateColumns: '1fr', textAlign: 'center', padding: 'var(--spacing-4)' }}>
+                  No diagnostic data available
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -639,7 +600,7 @@ export default function LandingPage({ onSearch, onSelectHospital, onSelectServic
                 <div className={styles.accBadge}>
                   <span>Est. {h.established}</span>
                 </div>
-                <div className={styles.starsRow}>★ {h.rating} ({h.reviews} reviews)</div>
+                <div className={styles.starsRow}>Demo Center</div>
               </div>
               
               <div className={styles.hospitalBody}>

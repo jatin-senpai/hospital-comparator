@@ -39,8 +39,8 @@ export default function HospitalDetailDrawer({ hospitalId, activeServiceId, onCl
             ← Back to results
           </button>
           {hospital && (
-            <span className={styles.badge} style={{ background: 'var(--success-light)', color: 'var(--success)' }}>
-              {hospital.badge || 'Verified'}
+            <span className={styles.badge} style={{ background: 'rgba(15,23,42,0.04)', color: 'var(--chalk-2)' }}>
+              Est. {hospital.established || 2010}
             </span>
           )}
         </div>
@@ -62,21 +62,7 @@ export default function HospitalDetailDrawer({ hospitalId, activeServiceId, onCl
               <h2 className={styles.name}>{hospital.name}</h2>
               {hospital.tagline && <p className={styles.tagline}>"{hospital.tagline}"</p>}
               
-              <div className={styles.ratingRow}>
-                <span className={styles.stars}>
-                  {Array.from({ length: 5 }, (_, i) => (
-                    <span 
-                      key={i} 
-                      className={styles.star} 
-                      style={{ color: i < Math.floor(hospital.rating) ? '#F5A623' : '#e2e8f0' }}
-                    >
-                      ★
-                    </span>
-                  ))}
-                </span>
-                <span className={styles.ratingValue}>{hospital.rating}</span>
-                <span className={styles.reviewCount}>({hospital.review_count?.toLocaleString()} reviews)</span>
-              </div>
+
             </div>
 
             {/* General Meta Section */}

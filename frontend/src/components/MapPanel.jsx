@@ -227,7 +227,7 @@ export default function MapPanel({ hospitals, serviceId, selected, hoveredId, ci
         <div className={styles.overlay}>
           <div className={styles.overlayText}>
             <div className={styles.overlayName}>{selected.name}</div>
-            <div className={styles.overlaySub}>{selected.distance} km away · ★ {selected.rating}</div>
+            <div className={styles.overlaySub}>{selected.distance} km away</div>
           </div>
           <div className={styles.overlayAction}>
             <div className={styles.overlayPrice}>

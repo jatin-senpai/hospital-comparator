@@ -406,7 +406,7 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
           <div className={styles.confirmed}>
             <div className={styles.checkmark}>✓</div>
             <h2 className={styles.confirmedTitle}>Booking Confirmed!</h2>
-            <p className={styles.confirmedSub}>Your slot is reserved. A confirmation SMS and email have been sent.</p>
+            <p className={styles.confirmedSub}>Your appointment has been successfully recorded in this demo showcase.</p>
 
             {/* Premium notched receipt ticket card */}
             <div className={styles.ticketCard}>

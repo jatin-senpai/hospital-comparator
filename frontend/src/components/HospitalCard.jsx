@@ -3,31 +3,8 @@ import styles from './HospitalCard.module.css'
 export default function HospitalCard({ hospital, serviceId, cheapest, isSelected, isHovered, onClick, onHover, onBook }) {
   const svc = hospital.services ? hospital.services[serviceId] : null
   const isCheapest = svc?.price && svc.price === cheapest
-  
-  // Custom badges color styling mapping
-  const badgeColorsClass = hospital.badge_color || hospital.badgeColor || 'chalk';
 
-  const renderStars = (rating) => {
-    const full = Math.floor(rating)
-    const half = rating % 1 >= 0.5
-    return (
-      <div className={styles.ratingContainer}>
-        <div className={styles.stars}>
-          {Array.from({ length: 5 }, (_, i) => (
-            <span
-              key={i}
-              className={styles.star}
-              style={{ color: i < full || (i === full && half) ? '#F5A623' : '#e2e8f0' }}
-            >
-              ★
-            </span>
-          ))}
-        </div>
-        <span className={styles.ratingNum}>{rating}</span>
-        <span className={styles.reviewCount}>({hospital.review_count?.toLocaleString() || hospital.reviews?.toLocaleString() || 0})</span>
-      </div>
-    )
-  }
+
 
   return (
     <div
@@ -40,11 +17,6 @@ export default function HospitalCard({ hospital, serviceId, cheapest, isSelected
         <div className={styles.headerRow}>
           <div className={styles.leftMeta}>
             <span className={styles.hospitalName}>{hospital.name}</span>
-            {hospital.badge && (
-              <span className={`${styles.badge} ${styles['badge_' + badgeColorsClass]}`}>
-                {hospital.badge}
-              </span>
-            )}
           </div>
           
           {/* Price display */}
@@ -54,8 +26,7 @@ export default function HospitalCard({ hospital, serviceId, cheapest, isSelected
           </div>
         </div>
 
-        {/* Rating and review section */}
-        {renderStars(hospital.rating)}
+
 
         {/* Core Comparison Metrics Grid */}
         <div className={styles.comparisonGrid}>
