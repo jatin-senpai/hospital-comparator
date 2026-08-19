@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SERVICES, CITIES, HOSPITALS } from '../services/mockData';
+import { api } from '../services/api';
 import styles from './LandingPage.module.css';
 
 // SVG Icon Pack - High-End Premium Vectors
@@ -44,23 +45,68 @@ export default function LandingPage({ onSearch, onSelectHospital, onSelectServic
   const activeService = SERVICES.find(s => s.id === selectedServiceId) || SERVICES[0];
   const activeCity = CITIES.find(c => c.id === selectedCityId) || CITIES[0];
 
-  // Derive mockup preview results for the centerpiece using mock data
-  const previewResults = HOSPITALS.map(h => {
-    const svc = h.services ? h.services[selectedServiceId] : null;
-    return {
-      id: h.id,
-      name: h.name,
-      rating: h.rating,
-      badge: h.badge,
-      distance: h.distance,
-      price: svc?.price || 0,
-      available: svc?.available || false,
-      report: svc?.report || '24 hrs',
-      // Map vector coordinates on centerpiece visual SVG map
-      x: h.id === 1 ? 55 : h.id === 2 ? 180 : h.id === 3 ? 245 : 100,
-      y: h.id === 1 ? 70 : h.id === 2 ? 185 : h.id === 3 ? 115 : 210
+  const [previewResults, setPreviewResults] = useState(() => {
+    // Synchronous default calculations for MRI + Jaipur to prevent flash on first mount
+    const jaipur = CITIES[0];
+    const defaultResults = HOSPITALS.map(h => {
+      const svc = h.services ? h.services['mri'] : null;
+      
+      const lat1 = jaipur.latitude;
+      const lon1 = jaipur.longitude;
+      const lat2 = h.latitude;
+      const lon2 = h.longitude;
+      const R = 6371;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      const dist = Math.round(R * c * 10) / 10;
+
+      return {
+        id: h.id,
+        name: h.name,
+        rating: h.rating,
+        distance: dist,
+        price: svc?.price || 0,
+        available: svc?.available || false,
+        report: svc?.report || '24 hrs',
+        x: h.id === 1 ? 55 : h.id === 2 ? 180 : h.id === 3 ? 245 : 100,
+        y: h.id === 1 ? 70 : h.id === 2 ? 185 : h.id === 3 ? 115 : 210
+      };
+    }).filter(r => r.price > 0 && r.distance < 50).sort((a, b) => a.price - b.price);
+    return defaultResults;
+  });
+
+  useEffect(() => {
+    let active = true;
+    const loadPreview = async () => {
+      try {
+        const data = await api.searchHospitals(selectedServiceId, activeCity.latitude, activeCity.longitude);
+        if (!active) return;
+        const results = data.results.map(r => {
+          const h = r.hospital;
+          return {
+            id: h.id,
+            name: h.name,
+            rating: h.rating,
+            distance: Math.round(r.distance_km * 10) / 10,
+            price: r.service_price?.price || 0,
+            available: r.service_price?.available || false,
+            report: r.service_price?.report_time || '24 hrs',
+            x: h.id === 1 || h.id === 5 ? 55 : h.id === 2 || h.id === 6 ? 180 : h.id === 3 || h.id === 7 ? 245 : 100,
+            y: h.id === 1 || h.id === 5 ? 70 : h.id === 2 || h.id === 6 ? 185 : h.id === 3 || h.id === 7 ? 115 : 210
+          };
+        }).sort((a, b) => a.price - b.price);
+        setPreviewResults(results);
+      } catch (err) {
+        console.error("Preview load failed:", err);
+      }
     };
-  }).filter(r => r.price > 0).sort((a, b) => a.price - b.price);
+    loadPreview();
+    return () => { active = false; };
+  }, [selectedServiceId, selectedCityId]);
 
   const minPrice = previewResults.length ? previewResults[0].price : 0;
   const hoveredHospital = previewResults.find(r => r.id === hoveredPreviewId);
@@ -458,7 +504,7 @@ export default function LandingPage({ onSearch, onSelectHospital, onSelectServic
 
             {activeWorkStep === 1 && (
               <div className={styles.simCard}>
-                <div className={styles.simCardHeader}>STEP 2: COMPARE ACCREDITED HOSPITALS</div>
+                <div className={styles.simCardHeader}>STEP 2: COMPARE LOCAL PROVIDERS</div>
                 <div className={styles.simList}>
                   <div className={styles.simRow} style={{ borderColor: 'var(--success)' }}>
                     <span>Max LifeCare</span>

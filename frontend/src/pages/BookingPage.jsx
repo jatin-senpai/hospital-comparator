@@ -176,7 +176,7 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
         {step === 0 && (
           <div className={styles.section}>
             <h2 className={styles.sectionTitle}>Select Date &amp; Time</h2>
-            <p className={styles.sectionSub}>Choose an appointment slot from the hospital's live calendar.</p>
+            <p className={styles.sectionSub}>Select an appointment slot from the available time slots.</p>
 
             {/* Day tabs */}
             <div className={styles.dayTabs}>
