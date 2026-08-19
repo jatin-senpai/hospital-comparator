@@ -19,7 +19,23 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
   const [slots, setSlots] = useState([])
 
   const service = SERVICES.find(s => s.id === serviceId)
-  const svc = hospital.services ? hospital.services[serviceId] : null
+  
+  let svc = null
+  if (hospital && hospital.services) {
+    if (Array.isArray(hospital.services)) {
+      const found = hospital.services.find(s => s.service_id === serviceId)
+      if (found) {
+        svc = {
+          price: typeof found.price === 'string' ? parseFloat(found.price) : found.price,
+          duration: found.duration_min || found.duration || 15,
+          available: found.available,
+          report: found.report_time || found.report || '24 hrs'
+        }
+      }
+    } else {
+      svc = hospital.services[serviceId] || null
+    }
+  }
 
   useEffect(() => {
     api.getSlots(hospital.id).then(data => {

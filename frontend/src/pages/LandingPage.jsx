@@ -186,7 +186,7 @@ export default function LandingPage({ onSearch, onSelectHospital, onSelectServic
             {/* Left list preview */}
             <div className={styles.previewListCol}>
               <div className={styles.previewMetaHeader}>
-                {previewResults.length} providers near {activeCity.name}
+                {previewResults.length} providers available for {activeCity.name}
               </div>
               <div className={styles.previewList}>
                 {previewResults.map(r => (
@@ -307,7 +307,8 @@ export default function LandingPage({ onSearch, onSelectHospital, onSelectServic
               {previewResults.map(r => {
                 const maxPrice = Math.max(...previewResults.map(x => x.price), 1);
                 const percent = Math.round((r.price / maxPrice) * 100);
-                const isMin = r.price === minPrice;
+                const hasVar = minPrice < maxPrice;
+                const isMin = hasVar && r.price === minPrice;
                 return (
                   <div key={r.id} className={styles.proofVisualRow} style={isMin ? { color: 'var(--success)' } : {}}>
                     <span className={styles.proofLabel}>{r.name} {isMin ? '(Lowest)' : ''}</span>
@@ -330,9 +331,10 @@ export default function LandingPage({ onSearch, onSelectHospital, onSelectServic
                 const sortedByDistance = [...previewResults].sort((a, b) => a.distance - b.distance);
                 const maxDist = Math.max(...previewResults.map(x => x.distance), 1);
                 const minDist = sortedByDistance.length ? sortedByDistance[0].distance : 0;
+                const hasVar = minDist < maxDist;
                 return sortedByDistance.map(r => {
                   const percent = Math.round((r.distance / maxDist) * 100);
-                  const isMin = r.distance === minDist;
+                  const isMin = hasVar && r.distance === minDist;
                   return (
                     <div key={r.id} className={styles.proofVisualRow}>
                       <span className={styles.proofLabel}>{r.name} {isMin ? '(Closest)' : ''}</span>
@@ -362,9 +364,10 @@ export default function LandingPage({ onSearch, onSelectHospital, onSelectServic
                 const sortedByTime = [...previewResults].sort((a, b) => parseHours(a.report) - parseHours(b.report));
                 const maxTime = Math.max(...previewResults.map(x => parseHours(x.report)), 1);
                 const minTime = sortedByTime.length ? parseHours(sortedByTime[0].report) : 0;
+                const hasVar = minTime < maxTime;
                 return sortedByTime.map(r => {
                   const percent = Math.round((parseHours(r.report) / maxTime) * 100);
-                  const isMin = parseHours(r.report) === minTime;
+                  const isMin = hasVar && parseHours(r.report) === minTime;
                   return (
                     <div key={r.id} className={styles.proofVisualRow} style={isMin ? { color: 'var(--success)' } : {}}>
                       <span className={styles.proofLabel}>{r.name} {isMin ? '(Fastest)' : ''}</span>

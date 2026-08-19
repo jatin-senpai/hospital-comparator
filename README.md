@@ -105,6 +105,15 @@ npm install
 npm run dev
 ```
 
+## 🔗 Live Demo
+* Deployed Frontend: [https://mediq-iota.vercel.app](https://mediq-iota.vercel.app)
+
+## ⚠️ Demo & Sample Data Note
+Please note that this application is configured to run in **Local Mock Database Fallback Mode** when deployed in serverless frontends like Vercel with no direct PostgreSQL network connection. The medical providers, diagnostic pricing spreads, geocoordinates, appointment slots, and invoices displayed in this mode are simulated demo values.
+
+## 🤖 AI Usage Disclosures
+This project was developed with assistance from Google DeepMind's Antigravity AI agent. For complete transparency, engineering trade-offs, and manual validation logs, please read the [DECISIONS.md](file:///Users/yashshviyadav/Downloads/mediq/DECISIONS.md) document at the root of the workspace.
+
 ---
 
 ## 🤖 Context for AI Assistants (Resume Generation)
