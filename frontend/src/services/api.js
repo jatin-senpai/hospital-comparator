@@ -27,18 +27,18 @@ export async function fetchWithAuth(url, options = {}) {
 
   const response = await fetch(`${API_BASE_URL}${url}`, { ...options, headers });
   
-  let data;
-  try {
-    data = await response.json();
-  } catch (e) {
-    data = {};
-  }
-
   if (!response.ok) {
+    let data;
+    try {
+      data = await response.json();
+    } catch (e) {
+      data = {};
+    }
     throw new Error(data.error || 'API request failed');
   }
 
-  return data;
+  // Parse JSON. If parsing fails (e.g. response is HTML index), propagate error to trigger fallback
+  return await response.json();
 }
 
 export const api = {
