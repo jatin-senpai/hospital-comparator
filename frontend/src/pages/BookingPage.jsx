@@ -27,6 +27,17 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
     }).catch(err => console.error("Failed to fetch slots", err))
   }, [hospital.id])
 
+  // Pre-fill user details if logged in
+  useEffect(() => {
+    if (user) {
+      setForm(f => ({
+        ...f,
+        name: user.name || '',
+        email: user.email || '',
+      }))
+    }
+  }, [user])
+
   const handlePay = async () => {
     setProcessing(true)
     try {
@@ -48,7 +59,7 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
       
       // 2. Open Razorpay Checkout
       const options = {
-        key: "rzp_test_SjfpXFSR9XIQR2", // Replace with your key
+        key: "rzp_test_SjfpXFSR9XIQR2",
         amount: bookingRes.amount * 100,
         currency: "INR",
         name: "MediQ",
@@ -74,7 +85,7 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
           contact: form.phone,
         },
         theme: {
-          color: "#C8F04D",
+          color: "#2563eb",
         },
       }
 
@@ -98,54 +109,55 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
 
   return (
     <div className={styles.page}>
-      {/* Sidebar */}
+      {/* Sidebar summary panel */}
       <div className={styles.sidebar}>
-        <button className={styles.backBtn} onClick={onBack}>
+        <button className={styles.backBtn} onClick={onBack} aria-label="Go back to results">
           <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
-            <path d="M10 3L5 8L10 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            <path d="M10 3L5 8L10 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
           </svg>
-          Back
+          Back to results
         </button>
 
         <div className={styles.hospitalInfo}>
-          <div className={styles.hospitalAvatar}>{hospital.name[0]}</div>
-          <div className={styles.hospitalName}>{hospital.name}</div>
-          <div className={styles.hospitalAddr}>{hospital.address}</div>
+          <div className={styles.hospitalAvatar}>🏥</div>
+          <div>
+            <div className={styles.hospitalName}>{hospital.name}</div>
+            <div className={styles.hospitalAddr}>{hospital.address}</div>
+          </div>
         </div>
 
         <div className={styles.summaryCard}>
-          <div className={styles.summaryLabel}>SERVICE</div>
+          <div className={styles.summaryLabel}>Selected Procedure</div>
           <div className={styles.summaryService}>
             <span className={styles.summaryIcon}>{service?.icon}</span>
-            {service?.label}
+            <div>
+              <div className={styles.serviceNameText}>{service?.label}</div>
+              <div className={styles.serviceMetaText}>{svc?.duration || 15} min duration</div>
+            </div>
           </div>
 
           <div className={styles.summaryRow}>
-            <span>Duration</span>
-            <span>{svc?.duration} min</span>
-          </div>
-          <div className={styles.summaryRow}>
-            <span>Report</span>
-            <span>{svc?.report}</span>
+            <span>Report Delivery</span>
+            <span className={styles.heavyText}>{svc?.report}</span>
           </div>
 
           {selectedSlot && (
             <div className={styles.summarySlot}>
-              <div className={styles.summaryLabel}>APPOINTMENT</div>
-              <div className={styles.summarySlotTime}>{selectedSlot.label}</div>
-              <div className={styles.summarySlotDate}>{selectedSlot.date}</div>
+              <div className={styles.summaryLabel}>Appointment Schedule</div>
+              <div className={styles.summarySlotTime}>🕒 {selectedSlot.label}</div>
+              <div className={styles.summarySlotDate}>📅 {selectedSlot.date}</div>
             </div>
           )}
 
           <div className={styles.summaryDivider} />
 
           <div className={styles.summaryTotal}>
-            <span>Total</span>
+            <span>Grand Total</span>
             <span className={styles.summaryPrice}>₹{svc?.price?.toLocaleString()}</span>
           </div>
         </div>
 
-        {/* Step indicator */}
+        {/* Step indicator timeline */}
         <div className={styles.steps}>
           {STEPS.map((s, i) => (
             <div key={s} className={`${styles.step} ${i === step ? styles.stepActive : ''} ${i < step ? styles.stepDone : ''}`}>
@@ -158,13 +170,13 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
         </div>
       </div>
 
-      {/* Main content */}
+      {/* Main Content Area */}
       <div className={styles.content}>
         {/* Step 0: Slot selection */}
         {step === 0 && (
           <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Choose your slot</h2>
-            <p className={styles.sectionSub}>Select a date and time that works for you</p>
+            <h2 className={styles.sectionTitle}>Select Date &amp; Time</h2>
+            <p className={styles.sectionSub}>Choose an appointment slot from the hospital's live calendar.</p>
 
             {/* Day tabs */}
             <div className={styles.dayTabs}>
@@ -208,8 +220,8 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
               </button>
             ) : (
               <div className={styles.loginPrompt}>
-                <p>Please log in to book appointments.</p>
-                <button className={styles.nextBtn} onClick={onLoginReq}>Log In</button>
+                <p>Authentication is required to book a slot.</p>
+                <button className={styles.loginBtn} onClick={onLoginReq}>Sign In / Sign Up</button>
               </div>
             )}
           </div>
@@ -218,12 +230,12 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
         {/* Step 1: Patient details */}
         {step === 1 && (
           <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Patient details</h2>
-            <p className={styles.sectionSub}>Please enter the patient's information</p>
+            <h2 className={styles.sectionTitle}>Patient Information</h2>
+            <p className={styles.sectionSub}>Please enter the details of the individual receiving the diagnostic test.</p>
 
             <div className={styles.formGrid}>
               <div className={styles.formGroup}>
-                <label className={styles.label}>Full name *</label>
+                <label className={styles.label}>Patient's Full name *</label>
                 <input
                   className={styles.input}
                   placeholder="Rahul Sharma"
@@ -242,7 +254,7 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
                 />
               </div>
               <div className={styles.formGroup}>
-                <label className={styles.label}>Phone *</label>
+                <label className={styles.label}>Contact Phone Number *</label>
                 <input
                   className={styles.input}
                   placeholder="+91 98765 43210"
@@ -251,7 +263,7 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
                 />
               </div>
               <div className={styles.formGroup}>
-                <label className={styles.label}>Email</label>
+                <label className={styles.label}>Email Address</label>
                 <input
                   className={styles.input}
                   placeholder="rahul@gmail.com"
@@ -266,6 +278,7 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
                   {['Male', 'Female', 'Other'].map(g => (
                     <button
                       key={g}
+                      type="button"
                       className={`${styles.genderBtn} ${form.gender === g ? styles.genderActive : ''}`}
                       onClick={() => setForm({...form, gender: g})}
                     >
@@ -275,10 +288,10 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
                 </div>
               </div>
               <div className={`${styles.formGroup} ${styles.fullWidth}`}>
-                <label className={styles.label}>Doctor's notes / prescription (optional)</label>
+                <label className={styles.label}>Prescription notes / Medical history (optional)</label>
                 <textarea
                   className={`${styles.input} ${styles.textarea}`}
-                  placeholder="Any relevant medical history or doctor's instructions..."
+                  placeholder="Any symptoms, doctor remarks, or clinical requests..."
                   value={form.notes}
                   onChange={e => setForm({...form, notes: e.target.value})}
                   rows={3}
@@ -302,15 +315,13 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
         {/* Step 2: Payment */}
         {step === 2 && (
           <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Payment</h2>
-            <p className={styles.sectionSub}>Secure payment via Razorpay</p>
+            <h2 className={styles.sectionTitle}>Secure Payment</h2>
+            <p className={styles.sectionSub}>Transactions are securely encrypted and powered by Razorpay.</p>
 
             <div className={styles.payMethods}>
               {[
-                { id: 'upi', label: 'UPI', icon: '◈', sub: 'PhonePe, GPay, Paytm' },
-                { id: 'card', label: 'Card', icon: '◉', sub: 'Credit / Debit' },
-                { id: 'netbanking', label: 'Net Banking', icon: '◆', sub: 'All major banks' },
-                { id: 'wallet', label: 'Wallet', icon: '◇', sub: 'Paytm, Amazon Pay' },
+                { id: 'upi', label: 'UPI Option', icon: '◈', sub: 'GPay, PhonePe, Paytm' },
+                { id: 'card', label: 'Credit / Debit Card', icon: '◉', sub: 'Visa, MasterCard, RuPay' },
               ].map(m => (
                 <button
                   key={m.id}
@@ -318,7 +329,7 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
                   onClick={() => setPayMethod(m.id)}
                 >
                   <span className={styles.payIcon}>{m.icon}</span>
-                  <div>
+                  <div style={{ textAlign: 'left' }}>
                     <div className={styles.payLabel}>{m.label}</div>
                     <div className={styles.paySub}>{m.sub}</div>
                   </div>
@@ -328,30 +339,25 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
 
             {payMethod === 'upi' && (
               <div className={styles.upiWrap}>
-                <label className={styles.label}>UPI ID</label>
+                <label className={styles.label}>Enter UPI ID</label>
                 <input
                   className={styles.input}
                   placeholder="yourname@upi"
                   value={upiId}
                   onChange={e => setUpiId(e.target.value)}
                 />
-                <div className={styles.upiApps}>
-                  {['GPay', 'PhonePe', 'Paytm', 'BHIM'].map(a => (
-                    <button key={a} className={styles.upiApp}>{a}</button>
-                  ))}
-                </div>
               </div>
             )}
 
             {payMethod === 'card' && (
               <div className={styles.cardForm}>
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Card number</label>
+                  <label className={styles.label}>Card Number</label>
                   <input className={styles.input} placeholder="4242 4242 4242 4242" />
                 </div>
                 <div className={styles.twoCol}>
                   <div className={styles.formGroup}>
-                    <label className={styles.label}>Expiry</label>
+                    <label className={styles.label}>Expiry Date</label>
                     <input className={styles.input} placeholder="MM/YY" />
                   </div>
                   <div className={styles.formGroup}>
@@ -364,16 +370,16 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
 
             <div className={styles.payTotal}>
               <div className={styles.payTotalRow}>
-                <span>{service?.label}</span>
+                <span>Procedure Cost ({service?.label})</span>
                 <span>₹{svc?.price?.toLocaleString()}</span>
               </div>
               <div className={styles.payTotalRow}>
-                <span>Platform fee</span>
-                <span>₹0</span>
+                <span>Platform Transaction Fee</span>
+                <span style={{ color: 'var(--success)', fontWeight: 600 }}>FREE</span>
               </div>
               <div className={styles.payTotalDivider} />
               <div className={`${styles.payTotalRow} ${styles.payTotalFinal}`}>
-                <span>Total</span>
+                <span>Total amount to pay</span>
                 <span>₹{svc?.price?.toLocaleString()}</span>
               </div>
             </div>
@@ -385,17 +391,12 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
                 onClick={handlePay}
                 disabled={processing}
               >
-                {processing ? (
-                  <span className={styles.processingText}>
-                    <span className={styles.spinner} />
-                    Processing...
-                  </span>
-                ) : `Pay ₹${svc?.price?.toLocaleString()} →`}
+                {processing ? 'Processing payment...' : `Pay ₹${svc?.price?.toLocaleString()} →`}
               </button>
             </div>
 
             <div className={styles.secureNote}>
-              🔒 256-bit SSL encrypted · Powered by Razorpay
+              🔒 256-bit SSL encrypted · Verified by Razorpay
             </div>
           </div>
         )}
@@ -404,12 +405,13 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
         {step === 3 && (
           <div className={styles.confirmed}>
             <div className={styles.checkmark}>✓</div>
-            <h2 className={styles.confirmedTitle}>Booking confirmed!</h2>
-            <p className={styles.confirmedSub}>Your appointment has been scheduled successfully.</p>
+            <h2 className={styles.confirmedTitle}>Booking Confirmed!</h2>
+            <p className={styles.confirmedSub}>Your slot is reserved. A confirmation SMS and email have been sent.</p>
 
+            {/* Premium notched receipt ticket card */}
             <div className={styles.ticketCard}>
               <div className={styles.ticketHeader}>
-                <span className={styles.ticketLabel}>BOOKING ID</span>
+                <span className={styles.ticketLabel}>BOOKING REFERENCE</span>
                 <span className={styles.ticketId}>{bookingRef}</span>
               </div>
               <div className={styles.ticketDivider}>
@@ -420,42 +422,39 @@ export default function BookingPage({ hospital, serviceId, onBack, onConfirm, on
               <div className={styles.ticketBody}>
                 <div className={styles.ticketRow}>
                   <span>Hospital</span>
-                  <span>{hospital.name}</span>
+                  <span className={styles.ticketValue}>{hospital.name}</span>
                 </div>
                 <div className={styles.ticketRow}>
-                  <span>Service</span>
-                  <span>{service?.label}</span>
+                  <span>Diagnostic Test</span>
+                  <span className={styles.ticketValue}>{service?.label}</span>
                 </div>
                 <div className={styles.ticketRow}>
                   <span>Patient</span>
-                  <span>{form.name}</span>
+                  <span className={styles.ticketValue}>{form.name} ({form.age})</span>
                 </div>
                 <div className={styles.ticketRow}>
-                  <span>Date</span>
-                  <span>{selectedSlot?.date}</span>
+                  <span>Schedule</span>
+                  <span className={styles.ticketValue}>{selectedSlot?.date} at {selectedSlot?.label}</span>
                 </div>
                 <div className={styles.ticketRow}>
-                  <span>Time</span>
-                  <span>{selectedSlot?.label}</span>
-                </div>
-                <div className={styles.ticketRow}>
-                  <span>Amount paid</span>
+                  <span>Amount Paid</span>
                   <span className={styles.ticketPrice}>₹{svc?.price?.toLocaleString()}</span>
                 </div>
               </div>
             </div>
 
             <div className={styles.confirmedActions}>
-              <button className={styles.downloadBtn}>⬇ Download PDF</button>
-              <button className={styles.homeBtn} onClick={onBack}>Search again</button>
+              <button className={styles.downloadBtn} onClick={() => api.downloadReport(bookingRef)}>
+                ⬇ Download Invoice PDF
+              </button>
+              <button className={styles.homeBtn} onClick={onBack}>
+                Book another test
+              </button>
             </div>
-
-            <p className={styles.smsNote}>
-              Confirmation sent to {form.phone || 'your phone'} &amp; {form.email || 'email'}
-            </p>
           </div>
         )}
       </div>
     </div>
   )
 }
+

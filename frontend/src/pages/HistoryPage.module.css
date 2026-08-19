@@ -1,111 +1,301 @@
 .page {
-  padding: 40px;
-  max-width: 800px;
+  min-height: 100vh;
+  background-color: var(--bg-page);
+  padding: var(--spacing-12) 0;
+  width: 100%;
+}
+
+.container {
+  max-width: 720px;
   margin: 0 auto;
-  color: #F5F2ED;
-  font-family: 'Inter', sans-serif;
-  padding-top: 80px;
+  padding: 0 var(--spacing-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
 }
 
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
+  align-items: flex-start;
+  gap: var(--spacing-4);
+}
+
+.headerTitleCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
 }
 
 .title {
-  font-family: 'Syne', sans-serif;
-  font-size: 32px;
-  margin: 0;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--chalk);
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--chalk-2);
 }
 
 .backBtn {
-  background: none;
-  border: 1px solid rgba(245,242,237,0.2);
-  color: #F5F2ED;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--chalk-2);
+  border: var(--border);
+  padding: 6px var(--spacing-3);
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
 }
 
 .backBtn:hover {
-  background: rgba(245,242,237,0.1);
+  border-color: var(--chalk-3);
+  color: var(--chalk);
 }
 
-.loading {
-  text-align: center;
-  color: #8C8C8C;
-  padding: 40px;
-}
-
-.empty {
-  text-align: center;
-  background: #1A1A1A;
-  padding: 60px 20px;
-  border-radius: 16px;
-  color: #8C8C8C;
-}
-
+/* List containing booking cards */
 .list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--spacing-4);
 }
 
 .card {
-  background: #1A1A1A;
-  border-radius: 16px;
-  padding: 24px;
-  border: 1px solid rgba(245,242,237,0.05);
+  background: var(--bg-surface);
+  border: var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  transition: all var(--transition-fast);
+}
+
+.card:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-md);
+}
+
+.cardHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: var(--spacing-3);
 }
 
-.info {
+.bookingRefRow {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.refIcon {
+  color: var(--accent);
+  font-size: 14px;
 }
 
 .ref {
-  color: #C8F04D;
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.05em;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--chalk);
 }
 
-.service {
-  font-size: 18px;
-  font-weight: 600;
+.statusBadge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px var(--spacing-2);
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.statusConfirmed {
+  background: var(--success-light);
+  color: var(--success);
+}
+
+.statusPending {
+  background: var(--warning-light);
+  color: var(--warning);
+}
+
+.statusCancelled {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+
+.cardBody {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-6);
+}
+
+.infoCol {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.testName {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--chalk);
+  letter-spacing: 0.3px;
 }
 
 .patient {
-  color: #8C8C8C;
-  font-size: 14px;
+  font-size: 13px;
+  color: var(--chalk-2);
 }
 
-.meta {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 8px;
+.notes {
+  font-size: 12px;
+  color: var(--chalk-3);
+  margin-top: 4px;
+  font-style: italic;
+}
+
+.priceCol {
+  text-align: right;
 }
 
 .amount {
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--chalk);
 }
 
-.status {
-  padding: 4px 8px;
-  border-radius: 4px;
+.payMethod {
+  font-size: 11px;
+  color: var(--chalk-3);
+  margin-top: 2px;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border-color);
+  padding-top: var(--spacing-3);
   font-size: 12px;
+  color: var(--chalk-3);
+}
+
+.dateLabel {
+  font-size: 11px;
+}
+
+.downloadBtn {
+  background: var(--accent-light);
+  color: var(--accent);
+  font-size: 11px;
   font-weight: 600;
-  text-transform: uppercase;
-  background: rgba(45, 212, 160, 0.1);
-  color: #2DD4A0;
+  padding: 4px var(--spacing-2);
+  border-radius: var(--radius-sm);
+}
+
+.downloadBtn:hover {
+  background: rgba(37, 99, 235, 0.1);
+}
+
+.pendingActionLabel {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--warning);
+}
+
+/* Loading & states */
+.loadingState, .errorState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-12) 0;
+  color: var(--chalk-2);
+  gap: var(--spacing-4);
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.emptyState {
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  padding: var(--spacing-12) var(--spacing-6);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-4);
+  color: var(--chalk-2);
+}
+
+.emptyIcon {
+  font-size: 40px;
+}
+
+.emptyState h3 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--chalk);
+}
+
+.emptyState p {
+  font-size: 13px;
+  color: var(--chalk-3);
+  max-width: 340px;
+  line-height: 1.4;
+}
+
+.searchBtn {
+  background: var(--primary);
+  color: var(--bg-surface);
+  font-size: 13px;
+  font-weight: 600;
+  padding: var(--spacing-2) var(--spacing-6);
+  border-radius: var(--radius-sm);
+  margin-top: var(--spacing-2);
+}
+
+.searchBtn:hover {
+  background: var(--primary-hover);
+}
+
+.retryBtn {
+  background: var(--primary);
+  color: var(--bg-surface);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px var(--spacing-4);
+  border-radius: var(--radius-sm);
+}
+
+@media (max-width: 480px) {
+  .cardBody {
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+  
+  .priceCol {
+    text-align: left;
+  }
 }

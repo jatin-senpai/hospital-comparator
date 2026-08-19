@@ -47,6 +47,7 @@ export default function MapPanel({ hospitals, serviceId, selected, hoveredId, ci
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove()
         mapInstanceRef.current = null
+        setMapReady(false)
       }
     }
   }, [])
@@ -61,46 +62,47 @@ export default function MapPanel({ hospitals, serviceId, selected, hoveredId, ci
     markersRef.current = {}
 
     hospitals.forEach(h => {
-      // Use coordinates from the database model
       const coords = [h.latitude, h.longitude]
       if (!coords[0] || !coords[1]) return
 
-      const price = h.services[serviceId]?.price
+      const price = h.services ? h.services[serviceId]?.price : null;
       const isSelected = selected?.id === h.id
       const isHovered = hoveredId === h.id
+
+      // Airbnb-style pricing tag markers
+      const bg = isSelected ? '#059669' : isHovered ? '#2563eb' : '#ffffff';
+      const color = isSelected || isHovered ? '#ffffff' : '#0f172a';
+      const border = isSelected ? '#047857' : isHovered ? '#1d4ed8' : '#cbd5e1';
+      const scale = isSelected || isHovered ? 'scale(1.08)' : 'scale(1)';
+      const zIndex = isSelected ? 1000 : isHovered ? 900 : 100;
 
       const icon = L.divIcon({
         className: '',
         html: `
           <div style="
-            background: ${isSelected ? '#10b981' : isHovered ? '#38bdf8' : '#0ea5e9'};
-            color: #ffffff;
-            border: 1.5px solid ${isSelected ? '#047857' : isHovered ? '#0284c7' : '#0284c7'};
-            border-radius: 8px;
-            padding: 5px 10px;
+            transform: ${scale};
+            z-index: ${zIndex};
+            background: ${bg};
+            color: ${color};
+            border: 1.5px solid ${border};
+            border-radius: 20px;
+            padding: 4px 10px;
             font-family: 'Inter', sans-serif;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
             white-space: nowrap;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 12px rgba(15,23,42,0.08);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 2px;
           ">
-            <span style="font-size:10px;">₹</span>${price?.toLocaleString() || '?'}
+            <span style="font-size:10px; font-weight: 500;">₹</span>${price?.toLocaleString() || '?'}
           </div>
-          <div style="
-            width: 8px; height: 8px;
-            background: ${isSelected ? '#10b981' : isHovered ? '#38bdf8' : '#0ea5e9'};
-            border: 1.5px solid ${isSelected ? '#047857' : '#0284c7'};
-            border-radius: 50%;
-            margin: 3px auto 0;
-          "></div>
         `,
-        iconSize: [80, 40],
-        iconAnchor: [40, 40],
+        iconSize: [60, 26],
+        iconAnchor: [30, 13],
       })
 
       const marker = L.marker(coords, { icon })
@@ -114,22 +116,21 @@ export default function MapPanel({ hospitals, serviceId, selected, hoveredId, ci
     const userIcon = L.divIcon({
       className: '',
       html: `
-        <div style="position:relative; width:20px; height:20px;">
+        <div style="position:relative; width:16px; height:16px;">
           <div style="
-            width:20px; height:20px; border-radius:50%;
-            background: rgba(14, 165, 233, 0.2);
-            border: 2px solid #0ea5e9;
-            animation: pulse-accent 2s infinite;
+            width:16px; height:16px; border-radius:50%;
+            background: rgba(37, 99, 235, 0.15);
+            border: 1.5px solid #2563eb;
           "></div>
           <div style="
             position:absolute; inset:4px;
             border-radius:50%;
-            background:#0ea5e9;
+            background:#2563eb;
           "></div>
         </div>
       `,
-      iconSize: [20, 20],
-      iconAnchor: [10, 10],
+      iconSize: [16, 16],
+      iconAnchor: [8, 8],
     })
     L.marker(CENTER, { icon: userIcon }).addTo(map)
 
@@ -151,35 +152,40 @@ export default function MapPanel({ hospitals, serviceId, selected, hoveredId, ci
     <div className={styles.wrap}>
       <div ref={mapRef} className={styles.map} />
 
-      {/* Selected hospital overlay */}
+      {/* Selected hospital overlay card */}
       {selected && (
         <div className={styles.overlay}>
-          <div className={styles.overlayName}>{selected.name}</div>
-          <div className={styles.overlaySub}>{selected.distance} km away · {selected.rating} ★</div>
-          <div className={styles.overlayPrice}>
-            ₹{selected.services[serviceId]?.price?.toLocaleString()} for {serviceId}
+          <div className={styles.overlayText}>
+            <div className={styles.overlayName}>{selected.name}</div>
+            <div className={styles.overlaySub}>{selected.distance} km away · ★ {selected.rating}</div>
           </div>
-          <button className={styles.overlayBtn} onClick={() => onBook(selected)}>
-            Book appointment →
-          </button>
+          <div className={styles.overlayAction}>
+            <div className={styles.overlayPrice}>
+              ₹{selected.services ? selected.services[serviceId]?.price?.toLocaleString() : ''}
+            </div>
+            <button className={styles.overlayBtn} onClick={() => onBook(selected)}>
+              Book slot
+            </button>
+          </div>
         </div>
       )}
 
       {/* Legend */}
       <div className={styles.legend}>
         <div className={styles.legendItem}>
-          <div className={styles.legendDot} style={{ background: '#C8F04D' }} />
+          <div className={styles.legendDot} style={{ background: '#059669', border: '1px solid #047857' }} />
           <span>Selected</span>
         </div>
         <div className={styles.legendItem}>
-          <div className={styles.legendDot} style={{ background: '#2DD4A0' }} />
+          <div className={styles.legendDot} style={{ background: '#2563eb', border: '1px solid #1d4ed8' }} />
           <span>Hovered</span>
         </div>
         <div className={styles.legendItem}>
-          <div className={styles.legendDot} style={{ background: '#C8F04D', width: '8px', height: '8px', borderRadius: '50%', border: '2px solid #C8F04D' }} />
-          <span>You</span>
+          <div className={styles.legendDot} style={{ background: '#ffffff', border: '1px solid #cbd5e1' }} />
+          <span>Other</span>
         </div>
       </div>
     </div>
   )
 }
+
