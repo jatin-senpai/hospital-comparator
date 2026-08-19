@@ -21,3 +21,5 @@ bin/
 
 # Logs
 *.log
+.pdf
+
